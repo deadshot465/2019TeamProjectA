@@ -1,7 +1,26 @@
 #include "GraphicsEngine.h"
+#include <chrono>
 #include <SDL_image.h>
 #include <cassert>
 #include "Helper.h"
+
+using namespace std::chrono;
+
+void GraphicsEngine::UpdateBackground()
+{
+	static auto start_time = high_resolution_clock::now();
+	auto current_time = high_resolution_clock::now();
+	auto elapsed = duration<float, seconds::period>(current_time - start_time).count();
+
+	if (elapsed > 1.0f) {
+		mBackgroundPosition1.xPos -= mBackgroundMoveSpeed;
+		mBackgroundPosition2.xPos -= mBackgroundMoveSpeed;
+		start_time = current_time;
+	}
+
+	if (mBackgroundPosition1.xPos <= -1280) mBackgroundPosition1.xPos = 1280;
+	if (mBackgroundPosition2.xPos <= -1280) mBackgroundPosition2.xPos = 1280;
+}
 
 GraphicsEngine::GraphicsEngine(SDL_Window* window)
 {
@@ -11,6 +30,7 @@ GraphicsEngine::GraphicsEngine(SDL_Window* window)
 	mSpriteManager->LoadStaticSprite("texture/bg.png", mRenderer);
 	mEnemy = std::make_unique<Enemy>("texture/boss.png", mRenderer, 0, 0,
 		"texture/bullet.png", 0, 0);
+	mPlayer = std::make_unique<Player>("texture/player.png", mRenderer, 0, 0, 64, 512);
 	
 	IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
 }
@@ -39,10 +59,22 @@ void GraphicsEngine::Render()
 	{
 		assert(mRenderer);
 
-		mSpriteManager->RenderStaticSprite(mRenderer, 0,
-			{ 0, 0, 1024.0f / 1920.0f, 768.0f / 1080.0f });
+		UpdateBackground();
 
-		mEnemy->Update(mRenderer, { 512, 256, 1.0f, 1.0f });
+		mSpriteManager->RenderStaticSprite(mRenderer, 0,
+			mBackgroundPosition1);
+		mSpriteManager->RenderStaticSprite(mRenderer, 0,
+			mBackgroundPosition2);
+
+		mEnemy->Update(mRenderer, { 640, 256, 1.0f, 1.0f });
+		auto player_collision_box = mPlayer->GetCollisionBox();
+
+		mEnemy->CheckCollisions(player_collision_box);
+
+		auto key_states = SDL_GetKeyboardState(nullptr);
+		mPlayer->Update(key_states[SDL_SCANCODE_SPACE]);
+
+		mPlayer->Render(mRenderer);
 
 		SDL_RenderPresent(mRenderer);
 	}

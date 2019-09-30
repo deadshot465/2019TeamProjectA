@@ -3,9 +3,9 @@
 #include <list>
 #include <memory>
 #include <string>
-#include <vector>
 #include "Helper.h"
 #include "Image.h"
+#include "Projectile.h"
 
 class Enemy
 {
@@ -17,6 +17,7 @@ private:
 	std::unique_ptr<Image> mSprite = nullptr;
 	std::unique_ptr<Image> mProjectile = nullptr;
 
+	std::list<std::unique_ptr<Projectile>> mProjectiles;
 	std::list<RenderConfig> mProjectileConfigs;
 
 	void UpdateProjectiles();
@@ -27,6 +28,8 @@ public:
 		const std::string& projectileFilePath,
 		int projectileXPos, int projectileYPos);
 	~Enemy();
+
+	CollisionResult CheckCollisions(const SDL_Rect& playerCollisionBox) const noexcept;
 
 	void Update(SDL_Renderer* renderer, const RenderConfig& renderConfig);
 };

@@ -19,6 +19,12 @@ struct EnemySpriteSet {
 	int projectileIndex;
 };
 
+enum class CollisionResult {
+	None,
+	Guard,
+	Parry
+};
+
 inline void ThrowIfFailed(int result, const std::string& message) {
 	if (result < 0) {
 

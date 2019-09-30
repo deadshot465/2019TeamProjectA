@@ -21,5 +21,8 @@ public:
 	~Image();
 
 	void Render(SDL_Renderer* renderer, int dstXPos, int dstYPos, float scaleX, float scaleY);
+
+	int GetWidth() const noexcept;
+	int GetHeight() const noexcept;
 };
 

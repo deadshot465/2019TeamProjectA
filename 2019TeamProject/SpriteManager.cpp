@@ -23,11 +23,9 @@ int SpriteManager::LoadCharacterSprite(const std::string& filePath, SDL_Renderer
 	return index;
 }
 
-int SpriteManager::LoadProjectileSprite(const std::string& filePath, SDL_Renderer* renderer, int renderXPos, int renderYPos)
+void SpriteManager::MoveBackground(int x)
 {
-	int index = static_cast<int>(mProjectileSprites.size());
-	mProjectileSprites.emplace_back(std::make_unique<Image>(filePath, renderer, renderXPos, renderYPos));
-	return index;
+
 }
 
 void SpriteManager::RenderStaticSprite(SDL_Renderer* renderer, size_t index, const RenderConfig& renderConfig)
@@ -83,20 +81,6 @@ void SpriteManager::RenderCharacterSprites(SDL_Renderer* renderer, const std::ve
 				renderConfigs[i].xPos, renderConfigs[i].yPos,
 				renderConfigs[i].scaleX, renderConfigs[i].scaleY);
 		}
-	}
-	catch (const std::exception&)
-	{
-		throw;
-	}
-}
-
-void SpriteManager::RenderProjectileSprite(SDL_Renderer* renderer, size_t index, const RenderConfig& renderConfig)
-{
-	try
-	{
-		mProjectileSprites[index]->Render(renderer,
-			renderConfig.xPos, renderConfig.yPos,
-			renderConfig.scaleX, renderConfig.scaleY);
 	}
 	catch (const std::exception&)
 	{

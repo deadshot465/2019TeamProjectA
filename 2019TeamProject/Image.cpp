@@ -33,3 +33,13 @@ void Image::Render(SDL_Renderer* renderer, int dstXPos, int dstYPos,
 
 	SDL_RenderCopy(renderer, mTexture, &src_rect, &dst_rect);
 }
+
+int Image::GetWidth() const noexcept
+{
+	return mWidth;
+}
+
+int Image::GetHeight() const noexcept
+{
+	return mHeight;
+}
