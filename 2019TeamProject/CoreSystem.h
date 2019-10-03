@@ -2,10 +2,11 @@
 #include <memory>
 #include <SDL.h>
 #include "Enemy.h"
+#include "Helper.h"
 #include "Player.h"
 #include "SpriteManager.h"
 
-class GraphicsEngine
+class CoreSystem
 {
 private:
 	SDL_Renderer* mRenderer = nullptr;
@@ -14,16 +15,18 @@ private:
 	std::unique_ptr<Enemy> mEnemy = nullptr;
 	std::unique_ptr<Player> mPlayer = nullptr;
 
-	RenderConfig mBackgroundPosition1 = { 0, 0, 1280.0f / 1920.0f, 768.0f / 1080.0f };
-	RenderConfig mBackgroundPosition2 = { 1280, 0, 1280.0f / 1920.0f, 768.0f / 1080.0f };
-	int mBackgroundMoveSpeed = 128;
+	RenderConfig mBackgroundPosition1 = { 0, 0, SCALE_SIZE, SCALE_SIZE };
+	RenderConfig mBackgroundPosition2 = { WINDOW_WIDTH, 0, SCALE_SIZE, SCALE_SIZE };
+	int mBackgroundMoveSpeed = WINDOW_WIDTH / 10;
+
+	SDL_Rect mViewport = {};
 	
 	void UpdateBackground();
 	void UpdatePlayer();
 
 public:
-	GraphicsEngine(SDL_Window* window);
-	~GraphicsEngine();
+	CoreSystem(SDL_Window* window, const SDL_Rect& viewport);
+	~CoreSystem();
 
 	void ClearColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 0xFF);
 	void Render();

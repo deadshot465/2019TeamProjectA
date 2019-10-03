@@ -9,7 +9,7 @@ void Projectile::Update()
 
 Projectile::Projectile(int width, int height, int projectileXPos, int projectileYPos, float speed) : mSpeed(speed)
 {
-	mInnerCollisionBox.x = projectileXPos + width / 4 + width / 8;
+	mInnerCollisionBox.x = projectileXPos + width / 4;
 	mInnerCollisionBox.y = projectileYPos;
 	mInnerCollisionBox.h = height;
 	mInnerCollisionBox.w = width / 2;
@@ -21,8 +21,8 @@ Projectile::Projectile(int width, int height, int projectileXPos, int projectile
 
 	mRenderConfig.xPos = projectileXPos;
 	mRenderConfig.yPos = projectileYPos;
-	mRenderConfig.scaleX = 1.0f;
-	mRenderConfig.scaleY = 1.0f;
+	mRenderConfig.scaleX = SCALE_SIZE;
+	mRenderConfig.scaleY = SCALE_SIZE;
 }
 
 Projectile::~Projectile()

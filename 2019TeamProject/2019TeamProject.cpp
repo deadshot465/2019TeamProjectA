@@ -6,7 +6,7 @@ int main(int argc, char* args[])
 	try
 	{
 		Window window{};
-		window.Initialize("SDL Game", 1280, 768);
+		window.Initialize("SDL Game", WINDOW_WIDTH, WINDOW_HEIGHT);
 
 		while (window.IsInit()) {
 			window.Broadcast();

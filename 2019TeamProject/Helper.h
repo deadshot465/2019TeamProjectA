@@ -7,6 +7,10 @@
 #include <string>
 #include <cstring>
 
+constexpr int WINDOW_WIDTH = 960;
+constexpr int WINDOW_HEIGHT = 540;
+constexpr float SCALE_SIZE = 1.0f;
+
 struct RenderConfig {
 	int xPos;
 	int yPos;

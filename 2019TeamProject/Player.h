@@ -13,7 +13,7 @@ private:
 	std::chrono::time_point<std::chrono::steady_clock> mMoveTimer;
 
 	std::unique_ptr<Image> mSprite = nullptr;
-	int speed = 1;
+	int mSpeed = 25;
 
 	SDL_Rect mCollisionBox = {};
 	RenderConfig mRenderConfig = {};
@@ -25,7 +25,8 @@ public:
 
 	const SDL_Rect& GetCollisionBox();
 
-	void Update(Uint8 keyState);
+	void UpdateSpeed(const CollisionResult& result);
+	void Update(const std::chrono::time_point<std::chrono::steady_clock>& startTime);
 	void Render(SDL_Renderer* renderer);
 };
 

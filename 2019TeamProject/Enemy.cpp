@@ -64,7 +64,7 @@ void Enemy::Update(SDL_Renderer* renderer, const RenderConfig& renderConfig)
 
 	if (duration > mAttackDuration) {
 		mProjectiles.emplace_back(std::make_unique<Projectile>(mProjectile->GetWidth(), mProjectile->GetHeight(),
-			renderConfig.xPos, renderConfig.yPos + 256, -25));
+			renderConfig.xPos, renderConfig.yPos + (WINDOW_HEIGHT / 2), -25));
 		mAttackStartTime = current_time;
 		mAttackDuration = GetRandomFloatNumber<float>(1.0f, 5.0f);
 	}

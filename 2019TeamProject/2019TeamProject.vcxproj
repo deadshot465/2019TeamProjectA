@@ -161,7 +161,7 @@
   <ItemGroup>
     <ClCompile Include="2019TeamProject.cpp" />
     <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="GraphicsEngine.cpp" />
+    <ClCompile Include="CoreSystem.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Projectile.cpp" />
@@ -170,7 +170,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enemy.h" />
-    <ClInclude Include="GraphicsEngine.h" />
+    <ClInclude Include="CoreSystem.h" />
     <ClInclude Include="Helper.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="Player.h" />

@@ -2,7 +2,7 @@
 #include <memory>
 #include <SDL.h>
 #include <string>
-#include "GraphicsEngine.h"
+#include "CoreSystem.h"
 
 class Window
 {
@@ -12,7 +12,7 @@ private:
 	SDL_Event mEvent = {};
 	bool mIsInit = false;
 
-	std::unique_ptr<GraphicsEngine> mGraphicsEngine = nullptr;
+	std::unique_ptr<CoreSystem> mGraphicsEngine = nullptr;
 
 public:
 	Window() = default;
