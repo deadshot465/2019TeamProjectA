@@ -8,8 +8,7 @@ class Projectile
 {
 private:
 	RenderConfig mRenderConfig = {};
-	SDL_Rect mOuterCollisionBox = {};
-	SDL_Rect mInnerCollisionBox = {};
+	SDL_Rect mCollisionBox = {};
 	float mSpeed = 0.0f;
 
 public:
@@ -18,11 +17,10 @@ public:
 
 	void SetRenderConfig(const RenderConfig& renderConfig) noexcept;
 	const RenderConfig& GetRenderConfig() const noexcept;
-	const SDL_Rect& GetInnerCollisionBox() const noexcept;
-	const SDL_Rect& GetOuterCollisionBox() const noexcept;
+	const SDL_Rect& GetCollisionBox() const noexcept;
 
 	void Update();
 
-	CollisionResult CheckCollision(const SDL_Rect& other) const noexcept;
+	bool CheckCollision(const SDL_Rect& other) const noexcept;
 };
 

@@ -20,9 +20,8 @@ public:
 	int LoadCharacterSprite(const std::string& filePath, SDL_Renderer* renderer,
 		int renderXPos = 0, int renderYPos = 0);
 
-	void MoveBackground(int x);
-
 	void RenderStaticSprite(SDL_Renderer* renderer, size_t index, const RenderConfig& renderConfig);
+	void RenderStaticSprite(SDL_Renderer* renderer, size_t index, const RenderConfig& renderConfig, double angle);
 	void RenderStaticSprites(SDL_Renderer* renderer, const std::vector<RenderConfig>& renderConfigs);
 
 	void RenderCharacterSprite(SDL_Renderer* renderer, size_t index, const RenderConfig& renderConfig);

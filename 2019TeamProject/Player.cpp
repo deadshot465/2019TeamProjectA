@@ -14,6 +14,16 @@ void Player::Render(SDL_Renderer* renderer)
 		mRenderConfig.scaleX, mRenderConfig.scaleY);
 }
 
+int Player::GetSpeed() const noexcept
+{
+	return mSpeed;
+}
+
+void Player::SetSpeed(int speed) noexcept
+{
+	mSpeed = speed;
+}
+
 Player::Player(const std::string& filePath, SDL_Renderer* renderer, int renderXPos, int renderYPos, int initialXPos, int initialYPos)
 {
 	mSprite = std::make_unique<Image>(filePath, renderer, renderXPos, renderYPos);
@@ -32,16 +42,6 @@ Player::Player(const std::string& filePath, SDL_Renderer* renderer, int renderXP
 Player::~Player()
 {
 	mSprite.reset();
-}
-
-void Player::UpdateSpeed(const CollisionResult& result)
-{
-	if (result == CollisionResult::Guard) {
-		mSpeed = 0;
-	}
-	else if (result == CollisionResult::Parry) {
-		mSpeed *= 3;
-	}
 }
 
 void Player::Update(const std::chrono::time_point<std::chrono::steady_clock>& startTime)

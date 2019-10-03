@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include "Enemy.h"
 #include "Helper.h"
+#include "Mixer.h"
 #include "Player.h"
 #include "SpriteManager.h"
 
@@ -14,6 +15,7 @@ private:
 	std::unique_ptr<SpriteManager> mSpriteManager = nullptr;
 	std::unique_ptr<Enemy> mEnemy = nullptr;
 	std::unique_ptr<Player> mPlayer = nullptr;
+	std::unique_ptr<Mixer> mMixer = nullptr;
 
 	RenderConfig mBackgroundPosition1 = { 0, 0, SCALE_SIZE, SCALE_SIZE };
 	RenderConfig mBackgroundPosition2 = { WINDOW_WIDTH, 0, SCALE_SIZE, SCALE_SIZE };
