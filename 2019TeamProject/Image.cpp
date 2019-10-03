@@ -34,6 +34,16 @@ void Image::Render(SDL_Renderer* renderer, int dstXPos, int dstYPos,
 	SDL_RenderCopy(renderer, mTexture, &src_rect, &dst_rect);
 }
 
+void Image::Render(SDL_Renderer* renderer, int dstXPos, int dstYPos,
+	float scaleX, float scaleY, double angle)
+{
+	SDL_Rect src_rect = { mRenderXPos, mRenderYPos, mWidth, mHeight };
+	SDL_Rect dst_rect = { dstXPos, dstYPos, mWidth * scaleX, mHeight * scaleY };
+
+	SDL_RenderCopyEx(renderer, mTexture, &src_rect, &dst_rect,
+		angle, nullptr, SDL_FLIP_NONE);
+}
+
 int Image::GetWidth() const noexcept
 {
 	return mWidth;

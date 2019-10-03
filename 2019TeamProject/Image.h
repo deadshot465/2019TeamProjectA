@@ -21,6 +21,8 @@ public:
 	~Image();
 
 	void Render(SDL_Renderer* renderer, int dstXPos, int dstYPos, float scaleX, float scaleY);
+	void Render(SDL_Renderer* renderer, int dstXPos, int dstYPos,
+		float scaleX, float scaleY, double angle);
 
 	int GetWidth() const noexcept;
 	int GetHeight() const noexcept;

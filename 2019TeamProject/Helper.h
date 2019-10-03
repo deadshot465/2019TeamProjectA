@@ -23,10 +23,8 @@ struct EnemySpriteSet {
 	int projectileIndex;
 };
 
-enum class CollisionResult {
-	None,
-	Guard,
-	Parry
+enum class SoundList {
+	Scream
 };
 
 inline void ThrowIfFailed(int result, const std::string& message) {

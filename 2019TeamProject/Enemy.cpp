@@ -45,14 +45,21 @@ Enemy::~Enemy()
 	mSprite.reset();
 }
 
-CollisionResult Enemy::CheckCollisions(const SDL_Rect& playerCollisionBox) const noexcept
+bool Enemy::CheckCollisions(const SDL_Rect& playerCollisionBox) noexcept
 {
-	if (mProjectiles.empty()) return CollisionResult::None;
+	if (mProjectiles.empty()) return false;
 
-	for (const auto& projectile : mProjectiles) {
-		auto res = projectile->CheckCollision(playerCollisionBox);
-		if (res != CollisionResult::None)
+	auto iter = mProjectiles.begin();
+	
+	while (iter != mProjectiles.end()) {
+		auto res = iter->get()->CheckCollision(playerCollisionBox);
+		if (res) {
+			iter = mProjectiles.erase(iter);
 			return res;
+		}
+		else {
+			++iter;
+		}
 	}
 }
 
@@ -78,9 +85,9 @@ void Enemy::Update(SDL_Renderer* renderer, const RenderConfig& renderConfig)
 			projectile->GetRenderConfig().scaleY);
 
 		SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
-		SDL_RenderDrawRect(renderer, &(projectile->GetInnerCollisionBox()));
+		SDL_RenderDrawRect(renderer, &(projectile->GetCollisionBox()));
 		SDL_SetRenderDrawColor(renderer, 0x00, 0xFF, 0x00, 0xFF);
-		SDL_RenderDrawRect(renderer, &(projectile->GetOuterCollisionBox()));
+		SDL_RenderDrawRect(renderer, &(projectile->GetCollisionBox()));
 	}
 
 	mSprite->Render(renderer, renderConfig.xPos, renderConfig.yPos,

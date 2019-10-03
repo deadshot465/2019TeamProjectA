@@ -26,53 +26,18 @@ void CoreSystem::UpdateBackground()
 void CoreSystem::UpdatePlayer()
 {
 	static auto start_time = high_resolution_clock::now();
-	static auto acceleration_start_time = high_resolution_clock::now();
-	static bool accelerated = false;
-	static auto stored_result = CollisionResult::None;
-
 	auto current_time = high_resolution_clock::now();
-	auto acceleration_current_time = high_resolution_clock::now();
 	auto elapsed = duration<float, seconds::period>(current_time - start_time).count();
-	auto acceleration_elapsed =
-		duration<float, seconds::period>(acceleration_current_time - acceleration_start_time).count();
 
-	if (elapsed > 0.5f) {
-		
-		if (!accelerated) {
-			auto key_states = SDL_GetKeyboardState(nullptr);
-			auto res = CollisionResult();
-
-			if (key_states[SDL_SCANCODE_SPACE] && !accelerated) {
-				auto player_collision_box = mPlayer->GetCollisionBox();
-				res = mEnemy->CheckCollisions(player_collision_box);
-				mPlayer->UpdateSpeed(res);
-
-				if (res != CollisionResult::None) {
-					accelerated = true;
-					acceleration_start_time = acceleration_current_time;
-					
-					if (res == CollisionResult::Guard) {
-						mBackgroundMoveSpeed = 0;
-					}
-					else {
-						mBackgroundMoveSpeed *= 3;
-					}
-
-					mPlayer->Update(acceleration_start_time);
-					return;
-				}
-			}
-			mPlayer->Update(time_point<steady_clock>());
-		}
-		else {
-			if (acceleration_elapsed > 2.0f) {
-				accelerated = false;
-				mBackgroundMoveSpeed = WINDOW_WIDTH / 10;
-			}
-			mPlayer->Update(time_point<steady_clock>());
-		}
-		
-		start_time = current_time;
+	auto key_states = SDL_GetKeyboardState(nullptr);
+	auto res = mEnemy->CheckCollisions(mPlayer->GetCollisionBox());
+	
+	if (key_states[SDL_SCANCODE_SPACE]) {
+		if (res) mBackgroundMoveSpeed *= 1;
+		else mBackgroundMoveSpeed = 0;
+	}
+	else {
+		mBackgroundMoveSpeed = (WINDOW_WIDTH / 10) * 1;
 	}
 }
 
@@ -83,9 +48,15 @@ CoreSystem::CoreSystem(SDL_Window* window, const SDL_Rect& viewport) : mViewport
 	mSpriteManager = std::make_unique<SpriteManager>();
 
 	mSpriteManager->LoadStaticSprite("texture/sample_bg.png", mRenderer);
+	mSpriteManager->LoadStaticSprite("texture/sample_clock.png", mRenderer);
+	mSpriteManager->LoadStaticSprite("texture/sample_indicator.png", mRenderer);
+	mSpriteManager->LoadStaticSprite("texture/gameover.png", mRenderer);
+	
 	mEnemy = std::make_unique<Enemy>("texture/sample_boss.png", mRenderer, 0, 0,
 		"texture/sample_bullet.png", 0, 0);
 	mPlayer = std::make_unique<Player>("texture/sample_player.png", mRenderer, 0, 0, 64, WINDOW_HEIGHT * 0.75f);
+	
+	mMixer = std::make_unique<Mixer>();
 }
 
 CoreSystem::~CoreSystem()
@@ -108,6 +79,13 @@ void CoreSystem::ClearColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 
 void CoreSystem::Render()
 {
+	static auto start_time = high_resolution_clock::now();
+	static auto angle = 6.0;
+	static auto game_time = 0.0;
+	auto current_time = high_resolution_clock::now();
+	auto elapsed = duration<float, seconds::period>(current_time - start_time).count();
+	
+
 	try
 	{
 		assert(mRenderer);
@@ -116,11 +94,21 @@ void CoreSystem::Render()
 			mBackgroundPosition1);
 		mSpriteManager->RenderStaticSprite(mRenderer, 0,
 			mBackgroundPosition2);
+		mSpriteManager->RenderStaticSprite(mRenderer, 1,
+			{ 64, static_cast<int>(WINDOW_WIDTH * 0.05f), 1.0f, 1.0f });
+
+		if (elapsed >= 1.0f) {
+			angle += 6.0;
+			start_time = current_time;
+			game_time += elapsed;
+		}
+
+		mSpriteManager->RenderStaticSprite(mRenderer, 2,
+			{ 64, static_cast<int>(WINDOW_WIDTH * 0.05f), 1.0f, 1.0f }, angle);
 
 		mEnemy->Update(mRenderer,
 			{ static_cast<int>(mViewport.w * 0.6f),
 			static_cast<int>(mViewport.h * 0.25f), SCALE_SIZE, SCALE_SIZE });
-
 		
 		UpdatePlayer();
 		UpdateBackground();
@@ -128,7 +116,6 @@ void CoreSystem::Render()
 
 		SDL_SetRenderDrawColor(mRenderer, 0x00, 0x00, 0xFF, 0xFF);
 		SDL_RenderDrawRect(mRenderer, &(mPlayer->GetCollisionBox()));
-
 		SDL_RenderPresent(mRenderer);
 	}
 	catch (const std::exception&)

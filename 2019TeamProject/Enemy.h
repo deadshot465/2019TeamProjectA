@@ -29,7 +29,7 @@ public:
 		int projectileXPos, int projectileYPos);
 	~Enemy();
 
-	CollisionResult CheckCollisions(const SDL_Rect& playerCollisionBox) const noexcept;
+	bool CheckCollisions(const SDL_Rect& playerCollisionBox) noexcept;
 
 	void Update(SDL_Renderer* renderer, const RenderConfig& renderConfig);
 };

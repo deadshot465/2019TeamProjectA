@@ -25,8 +25,10 @@ public:
 
 	const SDL_Rect& GetCollisionBox();
 
-	void UpdateSpeed(const CollisionResult& result);
 	void Update(const std::chrono::time_point<std::chrono::steady_clock>& startTime);
 	void Render(SDL_Renderer* renderer);
+
+	int GetSpeed() const noexcept;
+	void SetSpeed(int speed) noexcept;
 };
 

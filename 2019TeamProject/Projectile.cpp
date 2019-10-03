@@ -3,21 +3,15 @@
 void Projectile::Update()
 {
 	mRenderConfig.xPos += mSpeed;
-	mInnerCollisionBox.x += mSpeed;
-	mOuterCollisionBox.x += mSpeed;
+	mCollisionBox.x += mSpeed;
 }
 
 Projectile::Projectile(int width, int height, int projectileXPos, int projectileYPos, float speed) : mSpeed(speed)
 {
-	mInnerCollisionBox.x = projectileXPos + width / 4;
-	mInnerCollisionBox.y = projectileYPos;
-	mInnerCollisionBox.h = height;
-	mInnerCollisionBox.w = width / 2;
-
-	mOuterCollisionBox.x = projectileXPos;
-	mOuterCollisionBox.y = projectileYPos;
-	mOuterCollisionBox.h = height;
-	mOuterCollisionBox.w = width;
+	mCollisionBox.x = projectileXPos + width / 4;
+	mCollisionBox.y = projectileYPos;
+	mCollisionBox.h = height;
+	mCollisionBox.w = width / 2;
 
 	mRenderConfig.xPos = projectileXPos;
 	mRenderConfig.yPos = projectileYPos;
@@ -39,23 +33,12 @@ const RenderConfig& Projectile::GetRenderConfig() const noexcept
 	return mRenderConfig;
 }
 
-const SDL_Rect& Projectile::GetInnerCollisionBox() const noexcept
+const SDL_Rect& Projectile::GetCollisionBox() const noexcept
 {
-	return mInnerCollisionBox;
+	return mCollisionBox;
 }
 
-const SDL_Rect& Projectile::GetOuterCollisionBox() const noexcept
+bool Projectile::CheckCollision(const SDL_Rect& other) const noexcept
 {
-	return mOuterCollisionBox;
-}
-
-
-CollisionResult Projectile::CheckCollision(const SDL_Rect& other) const noexcept
-{
-	auto res = SDL_HasIntersection(&mInnerCollisionBox, &other);
-	if (res) return CollisionResult::Parry;
-
-	res = SDL_HasIntersection(&mOuterCollisionBox, &other);
-	if (res) return CollisionResult::Guard;
-	else return CollisionResult::None;
+	return SDL_HasIntersection(&mCollisionBox, &other);
 }
