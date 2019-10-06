@@ -1,6 +1,10 @@
 #pragma once
 #include <memory>
+#ifdef _WIN32
 #include <SDL.h>
+#else
+#include <SDL2/SDL.h>
+#endif
 #include "Enemy.h"
 #include "Helper.h"
 #include "Mixer.h"

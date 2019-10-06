@@ -2,7 +2,11 @@
 #include <algorithm>
 #include <iostream>
 #include <random>
+#ifdef _WIN32
 #include <SDL.h>
+#else
+#include <SDL2/SDL.h>
+#endif
 #include <stdexcept>
 #include <string>
 #include <cstring>

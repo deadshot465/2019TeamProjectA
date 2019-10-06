@@ -3,7 +3,11 @@
 #include <list>
 #include <memory>
 #include <string>
+#ifdef _WIN32
 #include <SDL.h>
+#else
+#include <SDL2/SDL.h>
+#endif
 #include "Helper.h"
 #include "Image.h"
 

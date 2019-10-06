@@ -1,6 +1,10 @@
 #include "CoreSystem.h"
 #include <chrono>
+#ifdef _WIN32
 #include <SDL_image.h>
+#else
+#include <SDL_image/SDL_image.h>
+#endif
 #include <cassert>
 
 using namespace std::chrono;

@@ -1,5 +1,9 @@
 #include "Image.h"
+#ifdef _WIN32
 #include <SDL_image.h>
+#else
+#include <SDL_image/SDL_image.h>
+#endif
 #include <cassert>
 #include "Helper.h"
 
