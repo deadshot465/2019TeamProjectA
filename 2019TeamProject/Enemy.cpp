@@ -22,7 +22,6 @@ void Enemy::UpdateProjectiles()
 			iter->get()->Update();
 			++iter;
 		}
-
 		mProjectileStartTime = current_time;
 	}
 }
@@ -35,8 +34,10 @@ Enemy::Enemy(const std::string& filePath, SDL_Renderer* renderer,
 	mProjectileStartTime(high_resolution_clock::now()),
 	mAttackDuration(GetRandomFloatNumber<float>(1.0f, 5.0f))
 {
-	mSprite = std::make_unique<Image>(filePath, renderer, renderXPos, renderYPos);
-	mProjectile = std::make_unique<Image>(projectileFilePath, renderer, projectileXPos, projectileYPos);
+	mSprite = std::make_unique<Image>(filePath, renderer, renderXPos, renderYPos, true,
+		128, 128);
+	mProjectile = std::make_unique<Image>(projectileFilePath, renderer, projectileXPos, projectileYPos, true, 32, 32);
+	mProjectile->SetRenderXPos(32);
 }
 
 Enemy::~Enemy()
@@ -66,14 +67,25 @@ bool Enemy::CheckCollisions(const SDL_Rect& playerCollisionBox) noexcept
 void Enemy::Update(SDL_Renderer* renderer, const RenderConfig& renderConfig)
 {
 	auto current_time = high_resolution_clock::now();
-	auto duration = std::chrono::duration<float, std::chrono::seconds::period>
+	auto elapsed = std::chrono::duration<float, std::chrono::seconds::period>
 		(current_time - mAttackStartTime).count();
 
-	if (duration > mAttackDuration) {
+	if (elapsed > mAttackDuration && !mAnimationStarted) {
+		mAnimationStarted = true;
+		mAnimationStartTime = high_resolution_clock::now();
+		mSprite->SetRenderXPos(mSprite->GetWidth());
+
 		mProjectiles.emplace_back(std::make_unique<Projectile>(mProjectile->GetWidth(), mProjectile->GetHeight(),
 			renderConfig.xPos, renderConfig.yPos + (WINDOW_HEIGHT / 2), -25));
 		mAttackStartTime = current_time;
 		mAttackDuration = GetRandomFloatNumber<float>(1.0f, 5.0f);
+	}
+
+	auto animation_current_time = high_resolution_clock::now();
+	auto animation_elapsed = duration<float, seconds::period>(animation_current_time - mAnimationStartTime).count();
+	if (mAnimationStarted && animation_elapsed > 2.0f) {
+		mAnimationStarted = false;
+		mSprite->SetRenderXPos(0);
 	}
 
 	UpdateProjectiles();

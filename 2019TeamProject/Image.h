@@ -17,8 +17,12 @@ private:
 
 public:
 	Image(const std::string& filePath, SDL_Renderer* renderer,
-		int renderXPos, int renderYPos);
+		int renderXPos, int renderYPos, bool isAnimation = false,
+		int frameWidth = 0, int frameHeight = 0);
 	~Image();
+
+	void SetRenderXPos(int xPos) noexcept;
+	void SetRenderYPos(int yPos) noexcept;
 
 	void Render(SDL_Renderer* renderer, int dstXPos, int dstYPos, float scaleX, float scaleY);
 	void Render(SDL_Renderer* renderer, int dstXPos, int dstYPos,
