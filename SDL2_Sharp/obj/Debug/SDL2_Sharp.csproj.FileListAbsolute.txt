@@ -1,0 +1,6 @@
+C:\Users\sonic\source\repos\SDL2_Sharp\SDL2_Sharp\bin\Debug\SDL2_Sharp.exe.config
+C:\Users\sonic\source\repos\SDL2_Sharp\SDL2_Sharp\bin\Debug\SDL2_Sharp.exe
+C:\Users\sonic\source\repos\SDL2_Sharp\SDL2_Sharp\bin\Debug\SDL2_Sharp.pdb
+C:\Users\sonic\source\repos\SDL2_Sharp\SDL2_Sharp\obj\Debug\SDL2_Sharp.csprojAssemblyReference.cache
+C:\Users\sonic\source\repos\SDL2_Sharp\SDL2_Sharp\obj\Debug\SDL2_Sharp.exe
+C:\Users\sonic\source\repos\SDL2_Sharp\SDL2_Sharp\obj\Debug\SDL2_Sharp.pdb
