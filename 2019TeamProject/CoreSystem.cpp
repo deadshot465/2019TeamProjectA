@@ -58,7 +58,7 @@ CoreSystem::CoreSystem(SDL_Window* window, const SDL_Rect& viewport) : mViewport
 	
 	mEnemy = std::make_unique<Enemy>("texture/boss1.png", mRenderer, 0, 0,
 		"texture/bullet.png", 0, 0);
-	mPlayer = std::make_unique<Player>("texture/sample_player.png", mRenderer, 0, 0, 64, WINDOW_HEIGHT * 0.75f);
+	mPlayer = std::make_unique<Player>("texture/player.png", mRenderer, 0, 0, 64, WINDOW_HEIGHT * 0.75f);
 	
 	mMixer = std::make_unique<Mixer>();
 }
@@ -119,7 +119,7 @@ void CoreSystem::Render()
 
 		mEnemy->Update(mRenderer,
 			{ static_cast<int>(mViewport.w * 0.6f),
-			static_cast<int>(mViewport.h * 0.25f), SCALE_SIZE, SCALE_SIZE });
+			static_cast<int>(mViewport.h * 0.65f), SCALE_SIZE, SCALE_SIZE });
 		
 		UpdatePlayer();
 		UpdateBackground();

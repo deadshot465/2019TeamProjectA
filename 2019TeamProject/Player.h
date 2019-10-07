@@ -14,13 +14,14 @@
 class Player
 {
 private:
-	std::chrono::time_point<std::chrono::steady_clock> mMoveTimer;
+	std::chrono::time_point<std::chrono::steady_clock> mAnimationTimer;
 
 	std::unique_ptr<Image> mSprite = nullptr;
 	int mSpeed = 25;
 
 	SDL_Rect mCollisionBox = {};
 	RenderConfig mRenderConfig = {};
+	PlayerAnimation mCurrentAnimation = {};
 
 public:
 	Player(const std::string& filePath, SDL_Renderer* renderer,
@@ -29,8 +30,9 @@ public:
 
 	const SDL_Rect& GetCollisionBox();
 
-	void Update(const std::chrono::time_point<std::chrono::steady_clock>& startTime);
 	void Render(SDL_Renderer* renderer);
+	void SetAnimationState(PlayerAnimation playerAnimation);
+	void UpdateAnimation();
 
 	int GetSpeed() const noexcept;
 	void SetSpeed(int speed) noexcept;

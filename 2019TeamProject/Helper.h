@@ -22,9 +22,12 @@ struct RenderConfig {
 	float scaleY;
 };
 
-struct EnemySpriteSet {
-	int spriteIndex;
-	int projectileIndex;
+enum class PlayerAnimation {
+	Running,
+	Guard,
+	Parry,
+	Injury,
+	Beginning
 };
 
 enum class SoundList {
