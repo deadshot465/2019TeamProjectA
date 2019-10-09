@@ -12,6 +12,8 @@ class Enemy
 private:
 	std::chrono::time_point<std::chrono::steady_clock> mAttackStartTime;
 	std::chrono::time_point<std::chrono::steady_clock> mProjectileStartTime;
+	std::chrono::time_point<std::chrono::steady_clock> mAnimationStartTime;
+	bool mAnimationStarted = false;
 	float mAttackDuration = 0.0f;
 
 	std::unique_ptr<Image> mSprite = nullptr;

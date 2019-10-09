@@ -1,9 +1,15 @@
 #include "Image.h"
+#ifdef _WIN32
 #include <SDL_image.h>
+#else
+#include <SDL_image/SDL_image.h>
+#endif
+#include <cassert>
 #include "Helper.h"
 
 Image::Image(const std::string& filePath, SDL_Renderer* renderer,
-	int renderXPos, int renderYPos)
+	int renderXPos, int renderYPos, bool isAnimation,
+	int frameWidth, int frameHeight)
 {
 	auto surface = IMG_Load(filePath.c_str());
 	
@@ -12,10 +18,18 @@ Image::Image(const std::string& filePath, SDL_Renderer* renderer,
 		"SDL failed to set the color key.\n");
 
 	mTexture = SDL_CreateTextureFromSurface(renderer, surface);
-	mWidth = surface->w;
-	mHeight = surface->h;
 	mRenderXPos = renderXPos;
 	mRenderYPos = renderYPos;
+
+	if (!isAnimation) {
+		mWidth = surface->w;
+		mHeight = surface->h;
+	}
+	else {
+		assert(frameWidth != 0 && frameHeight != 0);
+		mWidth = frameWidth;
+		mHeight = frameHeight;
+	}
 
 	SDL_FreeSurface(surface);
 }
@@ -23,6 +37,16 @@ Image::Image(const std::string& filePath, SDL_Renderer* renderer,
 Image::~Image()
 {
 	SDL_DestroyTexture(mTexture);
+}
+
+void Image::SetRenderXPos(int xPos) noexcept
+{
+	mRenderXPos = xPos;
+}
+
+void Image::SetRenderYPos(int yPos) noexcept
+{
+	mRenderYPos = yPos;
 }
 
 void Image::Render(SDL_Renderer* renderer, int dstXPos, int dstYPos,

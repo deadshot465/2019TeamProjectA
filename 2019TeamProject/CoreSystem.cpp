@@ -1,6 +1,10 @@
 #include "CoreSystem.h"
 #include <chrono>
+#ifdef _WIN32
 #include <SDL_image.h>
+#else
+#include <SDL_image/SDL_image.h>
+#endif
 #include <cassert>
 
 using namespace std::chrono;
@@ -17,9 +21,9 @@ void CoreSystem::UpdateBackground()
 		start_time = current_time;
 	}
 
-	if (mBackgroundPosition1.xPos <= -WINDOW_WIDTH)
+	if (mBackgroundPosition1.xPos <= -(WINDOW_WIDTH * 2))
 		mBackgroundPosition1.xPos = WINDOW_WIDTH;
-	if (mBackgroundPosition2.xPos <= -WINDOW_WIDTH)
+	if (mBackgroundPosition2.xPos <= -(WINDOW_WIDTH * 2))
 		mBackgroundPosition2.xPos = WINDOW_WIDTH;
 }
 
@@ -47,14 +51,14 @@ CoreSystem::CoreSystem(SDL_Window* window, const SDL_Rect& viewport) : mViewport
 	mRenderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	mSpriteManager = std::make_unique<SpriteManager>();
 
-	mSpriteManager->LoadStaticSprite("texture/sample_bg.png", mRenderer);
+	mSpriteManager->LoadStaticSprite("texture/background_resized.png", mRenderer);
 	mSpriteManager->LoadStaticSprite("texture/sample_clock.png", mRenderer);
 	mSpriteManager->LoadStaticSprite("texture/sample_indicator.png", mRenderer);
-	mSpriteManager->LoadStaticSprite("texture/gameover.png", mRenderer);
+	mSpriteManager->LoadStaticSprite("texture/floor.png", mRenderer);
 	
-	mEnemy = std::make_unique<Enemy>("texture/sample_boss.png", mRenderer, 0, 0,
-		"texture/sample_bullet.png", 0, 0);
-	mPlayer = std::make_unique<Player>("texture/sample_player.png", mRenderer, 0, 0, 64, WINDOW_HEIGHT * 0.75f);
+	mEnemy = std::make_unique<Enemy>("texture/boss1.png", mRenderer, 0, 0,
+		"texture/bullet.png", 0, 0);
+	mPlayer = std::make_unique<Player>("texture/player.png", mRenderer, 0, 0, 64, WINDOW_HEIGHT * 0.75f);
 	
 	mMixer = std::make_unique<Mixer>();
 }
@@ -90,11 +94,17 @@ void CoreSystem::Render()
 	{
 		assert(mRenderer);
 
-		mSpriteManager->RenderStaticSprite(mRenderer, 0,
+		mSpriteManager->RenderStaticSprite(mRenderer,
+			static_cast<int>(StaticSpriteList::Background),
+			{ 0, 0, SCALE_SIZE, SCALE_SIZE });
+		mSpriteManager->RenderStaticSprite(mRenderer,
+			static_cast<int>(StaticSpriteList::Floor),
 			mBackgroundPosition1);
-		mSpriteManager->RenderStaticSprite(mRenderer, 0,
+		mSpriteManager->RenderStaticSprite(mRenderer,
+			static_cast<int>(StaticSpriteList::Floor),
 			mBackgroundPosition2);
-		mSpriteManager->RenderStaticSprite(mRenderer, 1,
+		mSpriteManager->RenderStaticSprite(mRenderer,
+			static_cast<int>(StaticSpriteList::Clock),
 			{ 64, static_cast<int>(WINDOW_WIDTH * 0.05f), 1.0f, 1.0f });
 
 		if (elapsed >= 1.0f) {
@@ -103,12 +113,13 @@ void CoreSystem::Render()
 			game_time += elapsed;
 		}
 
-		mSpriteManager->RenderStaticSprite(mRenderer, 2,
+		mSpriteManager->RenderStaticSprite(mRenderer,
+			static_cast<int>(StaticSpriteList::Indicator),
 			{ 64, static_cast<int>(WINDOW_WIDTH * 0.05f), 1.0f, 1.0f }, angle);
 
 		mEnemy->Update(mRenderer,
 			{ static_cast<int>(mViewport.w * 0.6f),
-			static_cast<int>(mViewport.h * 0.25f), SCALE_SIZE, SCALE_SIZE });
+			static_cast<int>(mViewport.h * 0.65f), SCALE_SIZE, SCALE_SIZE });
 		
 		UpdatePlayer();
 		UpdateBackground();

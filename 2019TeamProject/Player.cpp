@@ -14,6 +14,40 @@ void Player::Render(SDL_Renderer* renderer)
 		mRenderConfig.scaleX, mRenderConfig.scaleY);
 }
 
+void Player::SetAnimationState(PlayerAnimation playerAnimation)
+{
+	switch (playerAnimation)
+	{
+	case PlayerAnimation::Running:
+		mSprite->SetRenderXPos(0);
+		mSprite->SetRenderYPos(0);
+		break;
+	case PlayerAnimation::Guard:
+		mSprite->SetRenderXPos(0);
+		mSprite->SetRenderYPos(128);
+		break;
+	case PlayerAnimation::Parry:
+		mSprite->SetRenderXPos(0);
+		mSprite->SetRenderYPos(256);
+		break;
+	case PlayerAnimation::Injury:
+		mSprite->SetRenderXPos(0);
+		mSprite->SetRenderYPos(384);
+		break;
+	case PlayerAnimation::Beginning:
+		mSprite->SetRenderXPos(0);
+		mSprite->SetRenderYPos(512);
+		break;
+	default:
+		break;
+	}
+}
+
+void Player::UpdateAnimation()
+{
+	
+}
+
 int Player::GetSpeed() const noexcept
 {
 	return mSpeed;
@@ -26,7 +60,8 @@ void Player::SetSpeed(int speed) noexcept
 
 Player::Player(const std::string& filePath, SDL_Renderer* renderer, int renderXPos, int renderYPos, int initialXPos, int initialYPos)
 {
-	mSprite = std::make_unique<Image>(filePath, renderer, renderXPos, renderYPos);
+	mSprite = std::make_unique<Image>(filePath, renderer, renderXPos, renderYPos, true,
+		128, 128);
 
 	mRenderConfig.xPos = initialXPos;
 	mRenderConfig.yPos = initialYPos;
@@ -42,22 +77,4 @@ Player::Player(const std::string& filePath, SDL_Renderer* renderer, int renderXP
 Player::~Player()
 {
 	mSprite.reset();
-}
-
-void Player::Update(const std::chrono::time_point<std::chrono::steady_clock>& startTime)
-{
-	static auto start_time = time_point<steady_clock>();
-
-	if (startTime != time_point<steady_clock>()) {
-		start_time = startTime;
-		auto current_time = high_resolution_clock::now();
-		auto elapsed = duration<float, seconds::period>(current_time - start_time).count();
-
-		if (elapsed > 2.0f) {
-			mSpeed = 25;
-		}
-	}
-
-	mRenderConfig.xPos += mSpeed;
-	mCollisionBox.x += mSpeed;
 }

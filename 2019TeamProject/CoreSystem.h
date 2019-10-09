@@ -1,6 +1,10 @@
 #pragma once
 #include <memory>
+#ifdef _WIN32
 #include <SDL.h>
+#else
+#include <SDL2/SDL.h>
+#endif
 #include "Enemy.h"
 #include "Helper.h"
 #include "Mixer.h"
@@ -17,14 +21,21 @@ private:
 	std::unique_ptr<Player> mPlayer = nullptr;
 	std::unique_ptr<Mixer> mMixer = nullptr;
 
-	RenderConfig mBackgroundPosition1 = { 0, 0, SCALE_SIZE, SCALE_SIZE };
-	RenderConfig mBackgroundPosition2 = { WINDOW_WIDTH, 0, SCALE_SIZE, SCALE_SIZE };
+	RenderConfig mBackgroundPosition1 = { 0, WINDOW_HEIGHT - 128, SCALE_SIZE, SCALE_SIZE };
+	RenderConfig mBackgroundPosition2 = { WINDOW_WIDTH * 2, WINDOW_HEIGHT - 128, SCALE_SIZE, SCALE_SIZE };
 	int mBackgroundMoveSpeed = WINDOW_WIDTH / 10;
 
 	SDL_Rect mViewport = {};
 	
 	void UpdateBackground();
 	void UpdatePlayer();
+
+	enum class StaticSpriteList {
+		Background,
+		Clock,
+		Indicator,
+		Floor
+	};
 
 public:
 	CoreSystem(SDL_Window* window, const SDL_Rect& viewport);

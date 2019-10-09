@@ -2,7 +2,11 @@
 #include <algorithm>
 #include <iostream>
 #include <random>
+#ifdef _WIN32
 #include <SDL.h>
+#else
+#include <SDL2/SDL.h>
+#endif
 #include <stdexcept>
 #include <string>
 #include <cstring>
@@ -18,9 +22,12 @@ struct RenderConfig {
 	float scaleY;
 };
 
-struct EnemySpriteSet {
-	int spriteIndex;
-	int projectileIndex;
+enum class PlayerAnimation {
+	Running,
+	Guard,
+	Parry,
+	Injury,
+	Beginning
 };
 
 enum class SoundList {
