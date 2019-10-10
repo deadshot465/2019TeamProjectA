@@ -1,0 +1,359 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2344EB5A234ED4600002C532 /* Enemy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2344EB4A234ED45C0002C532 /* Enemy.cpp */; };
+		2344EB5B234ED4600002C532 /* 2019TeamProject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2344EB4B234ED45D0002C532 /* 2019TeamProject.cpp */; };
+		2344EB5C234ED4600002C532 /* Image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2344EB4C234ED45D0002C532 /* Image.cpp */; };
+		2344EB5D234ED4600002C532 /* Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2344EB4F234ED45D0002C532 /* Window.cpp */; };
+		2344EB5E234ED4600002C532 /* CoreSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2344EB50234ED45E0002C532 /* CoreSystem.cpp */; };
+		2344EB5F234ED4600002C532 /* Projectile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2344EB55234ED45F0002C532 /* Projectile.cpp */; };
+		2344EB60234ED4600002C532 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2344EB56234ED45F0002C532 /* Player.cpp */; };
+		2344EB61234ED4600002C532 /* SpriteManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2344EB57234ED45F0002C532 /* SpriteManager.cpp */; };
+		2344EB62234ED4600002C532 /* Mixer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2344EB59234ED4600002C532 /* Mixer.cpp */; };
+		2344EB65234ED5A80002C532 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2344EB64234ED5A80002C532 /* SDL2.framework */; };
+		2344EB68234ED5B50002C532 /* SDL2_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2344EB66234ED5B40002C532 /* SDL2_mixer.framework */; };
+		2344EB69234ED5B50002C532 /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2344EB67234ED5B40002C532 /* SDL2_image.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		2344EB3C234ECEE80002C532 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		2344EB3E234ECEE80002C532 /* 2019TeamProjectMac */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = 2019TeamProjectMac; sourceTree = BUILT_PRODUCTS_DIR; };
+		2344EB48234ED45C0002C532 /* Enemy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Enemy.h; path = 2019TeamProject/Enemy.h; sourceTree = SOURCE_ROOT; };
+		2344EB49234ED45C0002C532 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Player.h; path = 2019TeamProject/Player.h; sourceTree = SOURCE_ROOT; };
+		2344EB4A234ED45C0002C532 /* Enemy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Enemy.cpp; path = 2019TeamProject/Enemy.cpp; sourceTree = SOURCE_ROOT; };
+		2344EB4B234ED45D0002C532 /* 2019TeamProject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = 2019TeamProject.cpp; path = 2019TeamProject/2019TeamProject.cpp; sourceTree = SOURCE_ROOT; };
+		2344EB4C234ED45D0002C532 /* Image.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Image.cpp; path = 2019TeamProject/Image.cpp; sourceTree = SOURCE_ROOT; };
+		2344EB4D234ED45D0002C532 /* CoreSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreSystem.h; path = 2019TeamProject/CoreSystem.h; sourceTree = SOURCE_ROOT; };
+		2344EB4E234ED45D0002C532 /* SpriteManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpriteManager.h; path = 2019TeamProject/SpriteManager.h; sourceTree = SOURCE_ROOT; };
+		2344EB4F234ED45D0002C532 /* Window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Window.cpp; path = 2019TeamProject/Window.cpp; sourceTree = SOURCE_ROOT; };
+		2344EB50234ED45E0002C532 /* CoreSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CoreSystem.cpp; path = 2019TeamProject/CoreSystem.cpp; sourceTree = SOURCE_ROOT; };
+		2344EB51234ED45E0002C532 /* Mixer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Mixer.h; path = 2019TeamProject/Mixer.h; sourceTree = SOURCE_ROOT; };
+		2344EB52234ED45E0002C532 /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Window.h; path = 2019TeamProject/Window.h; sourceTree = SOURCE_ROOT; };
+		2344EB53234ED45E0002C532 /* Image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Image.h; path = 2019TeamProject/Image.h; sourceTree = SOURCE_ROOT; };
+		2344EB54234ED45E0002C532 /* Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Helper.h; path = 2019TeamProject/Helper.h; sourceTree = SOURCE_ROOT; };
+		2344EB55234ED45F0002C532 /* Projectile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Projectile.cpp; path = 2019TeamProject/Projectile.cpp; sourceTree = SOURCE_ROOT; };
+		2344EB56234ED45F0002C532 /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Player.cpp; path = 2019TeamProject/Player.cpp; sourceTree = SOURCE_ROOT; };
+		2344EB57234ED45F0002C532 /* SpriteManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SpriteManager.cpp; path = 2019TeamProject/SpriteManager.cpp; sourceTree = SOURCE_ROOT; };
+		2344EB58234ED4600002C532 /* Projectile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Projectile.h; path = 2019TeamProject/Projectile.h; sourceTree = SOURCE_ROOT; };
+		2344EB59234ED4600002C532 /* Mixer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Mixer.cpp; path = 2019TeamProject/Mixer.cpp; sourceTree = SOURCE_ROOT; };
+		2344EB64234ED5A80002C532 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
+		2344EB66234ED5B40002C532 /* SDL2_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_mixer.framework; path = ../../../../../../Library/Frameworks/SDL2_mixer.framework; sourceTree = "<group>"; };
+		2344EB67234ED5B40002C532 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../../../../../../Library/Frameworks/SDL2_image.framework; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2344EB3B234ECEE80002C532 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2344EB68234ED5B50002C532 /* SDL2_mixer.framework in Frameworks */,
+				2344EB69234ED5B50002C532 /* SDL2_image.framework in Frameworks */,
+				2344EB65234ED5A80002C532 /* SDL2.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2344EB35234ECEE80002C532 = {
+			isa = PBXGroup;
+			children = (
+				2344EB40234ECEE80002C532 /* 2019TeamProjectMac */,
+				2344EB3F234ECEE80002C532 /* Products */,
+				2344EB63234ED5A80002C532 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		2344EB3F234ECEE80002C532 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2344EB3E234ECEE80002C532 /* 2019TeamProjectMac */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2344EB40234ECEE80002C532 /* 2019TeamProjectMac */ = {
+			isa = PBXGroup;
+			children = (
+				2344EB4B234ED45D0002C532 /* 2019TeamProject.cpp */,
+				2344EB50234ED45E0002C532 /* CoreSystem.cpp */,
+				2344EB4D234ED45D0002C532 /* CoreSystem.h */,
+				2344EB4A234ED45C0002C532 /* Enemy.cpp */,
+				2344EB48234ED45C0002C532 /* Enemy.h */,
+				2344EB54234ED45E0002C532 /* Helper.h */,
+				2344EB4C234ED45D0002C532 /* Image.cpp */,
+				2344EB53234ED45E0002C532 /* Image.h */,
+				2344EB59234ED4600002C532 /* Mixer.cpp */,
+				2344EB51234ED45E0002C532 /* Mixer.h */,
+				2344EB56234ED45F0002C532 /* Player.cpp */,
+				2344EB49234ED45C0002C532 /* Player.h */,
+				2344EB55234ED45F0002C532 /* Projectile.cpp */,
+				2344EB58234ED4600002C532 /* Projectile.h */,
+				2344EB57234ED45F0002C532 /* SpriteManager.cpp */,
+				2344EB4E234ED45D0002C532 /* SpriteManager.h */,
+				2344EB4F234ED45D0002C532 /* Window.cpp */,
+				2344EB52234ED45E0002C532 /* Window.h */,
+			);
+			path = 2019TeamProjectMac;
+			sourceTree = "<group>";
+		};
+		2344EB63234ED5A80002C532 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2344EB67234ED5B40002C532 /* SDL2_image.framework */,
+				2344EB66234ED5B40002C532 /* SDL2_mixer.framework */,
+				2344EB64234ED5A80002C532 /* SDL2.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2344EB3D234ECEE80002C532 /* 2019TeamProjectMac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2344EB45234ECEE80002C532 /* Build configuration list for PBXNativeTarget "2019TeamProjectMac" */;
+			buildPhases = (
+				2344EB3A234ECEE80002C532 /* Sources */,
+				2344EB3B234ECEE80002C532 /* Frameworks */,
+				2344EB3C234ECEE80002C532 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = 2019TeamProjectMac;
+			productName = 2019TeamProjectMac;
+			productReference = 2344EB3E234ECEE80002C532 /* 2019TeamProjectMac */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2344EB36234ECEE80002C532 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1020;
+				ORGANIZATIONNAME = "周哲輝";
+				TargetAttributes = {
+					2344EB3D234ECEE80002C532 = {
+						CreatedOnToolsVersion = 10.2.1;
+					};
+				};
+			};
+			buildConfigurationList = 2344EB39234ECEE80002C532 /* Build configuration list for PBXProject "2019TeamProject" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 2344EB35234ECEE80002C532;
+			productRefGroup = 2344EB3F234ECEE80002C532 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2344EB3D234ECEE80002C532 /* 2019TeamProjectMac */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2344EB3A234ECEE80002C532 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2344EB62234ED4600002C532 /* Mixer.cpp in Sources */,
+				2344EB5C234ED4600002C532 /* Image.cpp in Sources */,
+				2344EB60234ED4600002C532 /* Player.cpp in Sources */,
+				2344EB5E234ED4600002C532 /* CoreSystem.cpp in Sources */,
+				2344EB5F234ED4600002C532 /* Projectile.cpp in Sources */,
+				2344EB61234ED4600002C532 /* SpriteManager.cpp in Sources */,
+				2344EB5B234ED4600002C532 /* 2019TeamProject.cpp in Sources */,
+				2344EB5A234ED4600002C532 /* Enemy.cpp in Sources */,
+				2344EB5D234ED4600002C532 /* Window.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		2344EB43234ECEE80002C532 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		2344EB44234ECEE80002C532 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		2344EB46234ECEE80002C532 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		2344EB47234ECEE80002C532 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2344EB39234ECEE80002C532 /* Build configuration list for PBXProject "2019TeamProject" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2344EB43234ECEE80002C532 /* Debug */,
+				2344EB44234ECEE80002C532 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2344EB45234ECEE80002C532 /* Build configuration list for PBXNativeTarget "2019TeamProjectMac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2344EB46234ECEE80002C532 /* Debug */,
+				2344EB47234ECEE80002C532 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2344EB36234ECEE80002C532 /* Project object */;
+}

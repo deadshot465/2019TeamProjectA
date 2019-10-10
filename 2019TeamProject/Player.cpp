@@ -54,7 +54,6 @@ void Player::UpdateAnimation()
 		switch (mCurrentAnimation)
 		{
 		case PlayerAnimation::Running:
-			mSprite->SetRenderXPos(mCurrentFrame)
 			break;
 		case PlayerAnimation::Guard:
 			break;

@@ -62,6 +62,7 @@ bool Enemy::CheckCollisions(const SDL_Rect& playerCollisionBox) noexcept
 			++iter;
 		}
 	}
+    return false;
 }
 
 void Enemy::Update(SDL_Renderer* renderer, const RenderConfig& renderConfig)
