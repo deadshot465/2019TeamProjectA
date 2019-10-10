@@ -16,6 +16,8 @@ void Player::Render(SDL_Renderer* renderer)
 
 void Player::SetAnimationState(PlayerAnimation playerAnimation)
 {
+	mCurrentAnimation = playerAnimation;
+
 	switch (playerAnimation)
 	{
 	case PlayerAnimation::Running:
@@ -45,7 +47,27 @@ void Player::SetAnimationState(PlayerAnimation playerAnimation)
 
 void Player::UpdateAnimation()
 {
-	
+	auto current_time = high_resolution_clock::now();
+	auto elapsed = duration<float, seconds::period>(current_time - mAnimationTimer).count();
+
+	if (elapsed > 0.2f) {
+		switch (mCurrentAnimation)
+		{
+		case PlayerAnimation::Running:
+			break;
+		case PlayerAnimation::Guard:
+			break;
+		case PlayerAnimation::Parry:
+			break;
+		case PlayerAnimation::Injury:
+			break;
+		case PlayerAnimation::Beginning:
+			break;
+		default:
+			break;
+		}
+		mAnimationTimer = current_time;
+	}
 }
 
 int Player::GetSpeed() const noexcept
@@ -58,7 +80,8 @@ void Player::SetSpeed(int speed) noexcept
 	mSpeed = speed;
 }
 
-Player::Player(const std::string& filePath, SDL_Renderer* renderer, int renderXPos, int renderYPos, int initialXPos, int initialYPos)
+Player::Player(const std::string& filePath, SDL_Renderer* renderer, int renderXPos, int renderYPos, int initialXPos, int initialYPos) :
+	mAnimationTimer(high_resolution_clock::now())
 {
 	mSprite = std::make_unique<Image>(filePath, renderer, renderXPos, renderYPos, true,
 		128, 128);

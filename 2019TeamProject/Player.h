@@ -21,7 +21,9 @@ private:
 
 	SDL_Rect mCollisionBox = {};
 	RenderConfig mRenderConfig = {};
+	
 	PlayerAnimation mCurrentAnimation = {};
+	int mCurrentFrame = 0;
 
 public:
 	Player(const std::string& filePath, SDL_Renderer* renderer,

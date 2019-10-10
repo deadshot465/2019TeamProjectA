@@ -3,7 +3,7 @@
 #ifdef _WIN32
 #include <SDL_image.h>
 #else
-#include <SDL_image/SDL_image.h>
+#include <SDL2_image/SDL_image.h>
 #endif
 #include <cassert>
 

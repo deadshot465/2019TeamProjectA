@@ -2,7 +2,7 @@
 #ifdef _WIN32
 #include <SDL_image.h>
 #else
-#include <SDL_image/SDL_image.h>
+#include <SDL2_image/SDL_image.h>
 #endif
 #include <cassert>
 #include "Helper.h"
@@ -53,7 +53,9 @@ void Image::Render(SDL_Renderer* renderer, int dstXPos, int dstYPos,
 	float scaleX, float scaleY)
 {
 	SDL_Rect src_rect = { mRenderXPos, mRenderYPos, mWidth, mHeight };
-	SDL_Rect dst_rect = { dstXPos, dstYPos, mWidth * scaleX, mHeight * scaleY };
+	SDL_Rect dst_rect = { dstXPos, dstYPos,
+        static_cast<int>(mWidth * scaleX),
+        static_cast<int>(mHeight * scaleY) };
 
 	SDL_RenderCopy(renderer, mTexture, &src_rect, &dst_rect);
 }
@@ -62,7 +64,9 @@ void Image::Render(SDL_Renderer* renderer, int dstXPos, int dstYPos,
 	float scaleX, float scaleY, double angle)
 {
 	SDL_Rect src_rect = { mRenderXPos, mRenderYPos, mWidth, mHeight };
-	SDL_Rect dst_rect = { dstXPos, dstYPos, mWidth * scaleX, mHeight * scaleY };
+	SDL_Rect dst_rect = { dstXPos, dstYPos,
+        static_cast<int>(mWidth * scaleX),
+        static_cast<int>(mHeight * scaleY) };
 
 	SDL_RenderCopyEx(renderer, mTexture, &src_rect, &dst_rect,
 		angle, nullptr, SDL_FLIP_NONE);
