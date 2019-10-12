@@ -31,8 +31,10 @@ public:
 		int projectileXPos, int projectileYPos);
 	~Enemy();
 
-	bool CheckCollisions(const SDL_Rect& playerCollisionBox) noexcept;
+	Projectile::CollisionResult CheckCollisions(const SDL_Rect& playerCollisionBox) noexcept;
+	Projectile::CollisionResult CheckParryCollisions(const SDL_Rect& playerCollisionBox) noexcept;
 
 	void Update(SDL_Renderer* renderer, const RenderConfig& renderConfig);
+	void DestroyProjectile(const std::list<std::unique_ptr<Projectile>>::iterator& iter);
 };
 

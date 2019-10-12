@@ -4,14 +4,25 @@ void Projectile::Update()
 {
 	mRenderConfig.xPos += mSpeed;
 	mCollisionBox.x += mSpeed;
+	mParryCollisionBox.x += mSpeed;
+}
+
+void Projectile::SetParryCollisionBoxEnabled(bool status) noexcept
+{
+	mParryCollisionBoxEnabled = status;
 }
 
 Projectile::Projectile(int width, int height, int projectileXPos, int projectileYPos, float speed) : mSpeed(speed)
 {
-	mCollisionBox.x = projectileXPos + width / 4;
+	mCollisionBox.x = projectileXPos;
 	mCollisionBox.y = projectileYPos;
 	mCollisionBox.h = height;
-	mCollisionBox.w = width / 2;
+	mCollisionBox.w = width;
+
+	mParryCollisionBox.x = projectileXPos - 2 * width;
+	mParryCollisionBox.y = projectileYPos;
+	mParryCollisionBox.h = height;
+	mParryCollisionBox.w = width;
 
 	mRenderConfig.xPos = projectileXPos;
 	mRenderConfig.yPos = projectileYPos;
@@ -38,7 +49,18 @@ const SDL_Rect& Projectile::GetCollisionBox() const noexcept
 	return mCollisionBox;
 }
 
+const SDL_Rect& Projectile::GetParryCollisionBox() const noexcept
+{
+	return mParryCollisionBox;
+}
+
 bool Projectile::CheckCollision(const SDL_Rect& other) const noexcept
 {
 	return SDL_HasIntersection(&mCollisionBox, &other);
+}
+
+bool Projectile::CheckParryCollision(const SDL_Rect& other) const noexcept
+{
+	if (!mParryCollisionBoxEnabled) return false;
+	return SDL_HasIntersection(&mParryCollisionBox, &other);
 }

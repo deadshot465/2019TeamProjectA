@@ -35,14 +35,60 @@ void CoreSystem::UpdatePlayer()
 
 	auto key_states = SDL_GetKeyboardState(nullptr);
 	auto res = mEnemy->CheckCollisions(mPlayer->GetCollisionBox());
-	
-	if (key_states[SDL_SCANCODE_SPACE]) {
-		if (res) mBackgroundMoveSpeed *= 1;
-		else mBackgroundMoveSpeed = 0;
+	auto parry_res = mEnemy->CheckParryCollisions(mPlayer->GetCollisionBox());
+
+	if (!res.result &&
+		parry_res.result &&
+		parry_res.projectile.has_value()) {
+		if (key_states[SDL_SCANCODE_SPACE]) {
+			mBackgroundMoveSpeed *= 1;
+			if (!(mPlayer->GetAnimationStarted())) {
+				mPlayer->SetAnimationState(PlayerAnimation::Parry);
+				mPlayer->SetAnimationStarted(true);
+				mEnemy->DestroyProjectile(parry_res.projectile.value());
+			}
+		}
 	}
-	else {
+
+	if (res.result && res.projectile.has_value()) {
+		if (key_states[SDL_SCANCODE_SPACE]) {
+			mBackgroundMoveSpeed = 0;
+			if (!(mPlayer->GetAnimationStarted())) {
+				mPlayer->SetAnimationState(PlayerAnimation::Guard);
+			}
+		}
+		else {
+			if (!(mPlayer->GetAnimationStarted())) {
+				mPlayer->SetAnimationState(PlayerAnimation::Injury);
+			}
+		}
+		mPlayer->SetAnimationStarted(true);
+		mEnemy->DestroyProjectile(parry_res.projectile.value());
 		mBackgroundMoveSpeed = (WINDOW_WIDTH / 10) * 1;
 	}
+	
+	/*if (key_states[SDL_SCANCODE_SPACE]) {
+		if (parry_res) {
+			
+		}
+		else {
+			mBackgroundMoveSpeed = 0;
+			if (!(mPlayer->GetAnimationStarted()))
+				mPlayer->SetAnimationState(PlayerAnimation::Guard);
+		}
+		mPlayer->SetAnimationStarted(true);
+	}
+	else {
+		if (res) {
+			if (!(mPlayer->GetAnimationStarted())) {
+				mPlayer->SetAnimationState(PlayerAnimation::Injury);
+				mPlayer->SetAnimationStarted(true);
+			}
+		}
+		mBackgroundMoveSpeed = (WINDOW_WIDTH / 10) * 1;
+	}*/
+
+	mPlayer->UpdateAnimation();
 }
 
 CoreSystem::CoreSystem(SDL_Window* window, const SDL_Rect& viewport) : mViewport(viewport)
@@ -58,7 +104,7 @@ CoreSystem::CoreSystem(SDL_Window* window, const SDL_Rect& viewport) : mViewport
 	
 	mEnemy = std::make_unique<Enemy>("texture/boss1.png", mRenderer, 0, 0,
 		"texture/bullet.png", 0, 0);
-	mPlayer = std::make_unique<Player>("texture/player.png", mRenderer, 0, 0, 64, WINDOW_HEIGHT * 0.75f);
+	mPlayer = std::make_unique<Player>("texture/player_revised.png", mRenderer, 0, 0, 64, WINDOW_HEIGHT * 0.75f);
 	
 	mMixer = std::make_unique<Mixer>();
 }
