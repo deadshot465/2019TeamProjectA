@@ -23,6 +23,9 @@ Projectile::Projectile(int width, int height, int projectileXPos, int projectile
 	mParryCollisionBox.y = projectileYPos;
 	mParryCollisionBox.h = height;
 	mParryCollisionBox.w = width;
+    
+    mParryCollisionBoxReferencePoint.x = mParryCollisionBox.x + (width / 2);
+    mParryCollisionBoxReferencePoint.y = mParryCollisionBox.y + (height / 2);
 
 	mRenderConfig.xPos = projectileXPos;
 	mRenderConfig.yPos = projectileYPos;
@@ -52,6 +55,11 @@ const SDL_Rect& Projectile::GetCollisionBox() const noexcept
 const SDL_Rect& Projectile::GetParryCollisionBox() const noexcept
 {
 	return mParryCollisionBox;
+}
+
+const SDL_Point& Projectile::GetReferencePoint() const noexcept
+{
+    return mParryCollisionBoxReferencePoint;
 }
 
 bool Projectile::CheckCollision(const SDL_Rect& other) const noexcept

@@ -34,59 +34,42 @@ void CoreSystem::UpdatePlayer()
 	auto elapsed = duration<float, seconds::period>(current_time - start_time).count();
 
 	auto key_states = SDL_GetKeyboardState(nullptr);
-	auto res = mEnemy->CheckCollisions(mPlayer->GetCollisionBox());
-	auto parry_res = mEnemy->CheckParryCollisions(mPlayer->GetCollisionBox());
-
-	if (!res.result &&
-		parry_res.result &&
-		parry_res.projectile.has_value()) {
-		if (key_states[SDL_SCANCODE_SPACE]) {
-			mBackgroundMoveSpeed *= 1;
-			if (!(mPlayer->GetAnimationStarted())) {
-				mPlayer->SetAnimationState(PlayerAnimation::Parry);
-				mPlayer->SetAnimationStarted(true);
-				mEnemy->DestroyProjectile(parry_res.projectile.value());
-			}
-		}
-	}
-
-	if (res.result && res.projectile.has_value()) {
-		if (key_states[SDL_SCANCODE_SPACE]) {
-			mBackgroundMoveSpeed = 0;
-			if (!(mPlayer->GetAnimationStarted())) {
-				mPlayer->SetAnimationState(PlayerAnimation::Guard);
-			}
-		}
-		else {
-			if (!(mPlayer->GetAnimationStarted())) {
-				mPlayer->SetAnimationState(PlayerAnimation::Injury);
-			}
-		}
-		mPlayer->SetAnimationStarted(true);
-		mEnemy->DestroyProjectile(parry_res.projectile.value());
-		mBackgroundMoveSpeed = (WINDOW_WIDTH / 10) * 1;
-	}
-	
-	/*if (key_states[SDL_SCANCODE_SPACE]) {
-		if (parry_res) {
-			
-		}
-		else {
-			mBackgroundMoveSpeed = 0;
-			if (!(mPlayer->GetAnimationStarted()))
-				mPlayer->SetAnimationState(PlayerAnimation::Guard);
-		}
-		mPlayer->SetAnimationStarted(true);
-	}
-	else {
-		if (res) {
-			if (!(mPlayer->GetAnimationStarted())) {
-				mPlayer->SetAnimationState(PlayerAnimation::Injury);
-				mPlayer->SetAnimationStarted(true);
-			}
-		}
-		mBackgroundMoveSpeed = (WINDOW_WIDTH / 10) * 1;
-	}*/
+    auto parry_res = mEnemy->CheckParryCollisions(mPlayer->GetCollisionBox());
+    
+    if (parry_res.result && parry_res.projectile.has_value()) {
+        if (key_states[SDL_SCANCODE_SPACE]) {
+            mBackgroundMoveSpeed *= 1;
+            if (!(mPlayer->GetAnimationStarted())) {
+                mPlayer->SetAnimationState(PlayerAnimation::Parry);
+                mPlayer->SetAnimationStarted(true);
+                mEnemy->DestroyProjectile(parry_res.projectile.value());
+            }
+        }
+        if (parry_res.projectile.value()->get()->GetReferencePoint().x <
+            mPlayer->GetCollisionBox().x + mPlayer->GetWidth())
+            parry_res.projectile.value()->get()->SetParryCollisionBoxEnabled(false);
+    }
+    else {
+        auto res = mEnemy->CheckCollisions(mPlayer->GetCollisionBox());
+        
+        if (res.result && res.projectile.has_value()) {
+            if (key_states[SDL_SCANCODE_SPACE]) {
+                mBackgroundMoveSpeed = 0;
+                if (!(mPlayer->GetAnimationStarted())) {
+                    mPlayer->SetAnimationState(PlayerAnimation::Guard);
+                    mPlayer->SetAnimationStarted(true);
+                }
+            }
+            else {
+                mBackgroundMoveSpeed = (WINDOW_WIDTH / 10) * 1;
+                if (!(mPlayer->GetAnimationStarted())) {
+                    mPlayer->SetAnimationState(PlayerAnimation::Injury);
+                    mPlayer->SetAnimationStarted(true);
+                }
+            }
+            mEnemy->DestroyProjectile(res.projectile.value());
+        }
+    }
 
 	mPlayer->UpdateAnimation();
 }
@@ -94,7 +77,11 @@ void CoreSystem::UpdatePlayer()
 CoreSystem::CoreSystem(SDL_Window* window, const SDL_Rect& viewport) : mViewport(viewport)
 {
 	IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
+#ifdef _WIN32
 	mRenderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+#else
+    mRenderer = SDL_GetRenderer(window);
+#endif
 	mSpriteManager = std::make_unique<SpriteManager>();
 
 	mSpriteManager->LoadStaticSprite("texture/background_resized.png", mRenderer);

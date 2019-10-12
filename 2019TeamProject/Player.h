@@ -40,6 +40,8 @@ public:
 
 	int GetSpeed() const noexcept;
 	void SetSpeed(int speed) noexcept;
+    
+    int GetWidth() const noexcept;
 
 	void SetAnimationStarted(bool started);
 	bool GetAnimationStarted() const noexcept;

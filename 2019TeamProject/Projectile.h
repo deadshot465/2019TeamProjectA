@@ -14,11 +14,12 @@ private:
 	RenderConfig mRenderConfig = {};
 	SDL_Rect mCollisionBox = {};
 	SDL_Rect mParryCollisionBox = {};
+    SDL_Point mParryCollisionBoxReferencePoint = {};
 	float mSpeed = 0.0f;
 	bool mParryCollisionBoxEnabled = true;
 
 public:
-	static struct CollisionResult {
+	struct CollisionResult {
 		std::optional<std::list<std::unique_ptr<Projectile>>::iterator> projectile;
 		bool result;
 	};
@@ -30,6 +31,7 @@ public:
 	const RenderConfig& GetRenderConfig() const noexcept;
 	const SDL_Rect& GetCollisionBox() const noexcept;
 	const SDL_Rect& GetParryCollisionBox() const noexcept;
+    const SDL_Point& GetReferencePoint() const noexcept;
 
 	void Update();
 	void SetParryCollisionBoxEnabled(bool status) noexcept;
