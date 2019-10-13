@@ -22,9 +22,9 @@ void CoreSystem::UpdateBackground()
 	}
 
 	if (mBackgroundPosition1.xPos <= -(WINDOW_WIDTH * 2))
-		mBackgroundPosition1.xPos = WINDOW_WIDTH;
+		mBackgroundPosition1.xPos = WINDOW_WIDTH * 2;
 	if (mBackgroundPosition2.xPos <= -(WINDOW_WIDTH * 2))
-		mBackgroundPosition2.xPos = WINDOW_WIDTH;
+		mBackgroundPosition2.xPos = WINDOW_WIDTH * 2;
 }
 
 void CoreSystem::UpdatePlayer()
@@ -91,7 +91,7 @@ CoreSystem::CoreSystem(SDL_Window* window, const SDL_Rect& viewport) : mViewport
 	
 	mEnemy = std::make_unique<Enemy>("texture/boss1.png", mRenderer, 0, 0,
 		"texture/bullet.png", 0, 0);
-	mPlayer = std::make_unique<Player>("texture/player_revised.png", mRenderer, 0, 0, 64, WINDOW_HEIGHT * 0.75f);
+	mPlayer = std::make_unique<Player>("texture/player_revised.png", mRenderer, 0, 0, 64, WINDOW_HEIGHT -300);
 	
 	mMixer = std::make_unique<Mixer>();
 }
@@ -151,8 +151,8 @@ void CoreSystem::Render()
 			{ 64, static_cast<int>(WINDOW_WIDTH * 0.05f), 1.0f, 1.0f }, angle);
 
 		mEnemy->Update(mRenderer,
-			{ static_cast<int>(mViewport.w * 0.6f),
-			static_cast<int>(mViewport.h * 0.65f), SCALE_SIZE, SCALE_SIZE });
+			{ static_cast<int>(mViewport.w * 0.7f),
+			static_cast<int>(mViewport.h * 0.45f), SCALE_SIZE, SCALE_SIZE });
 		
 		UpdatePlayer();
 		UpdateBackground();
