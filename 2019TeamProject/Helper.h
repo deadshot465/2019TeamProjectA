@@ -1,6 +1,7 @@
 #pragma once
 #include <algorithm>
 #include <iostream>
+#include <memory>
 #include <random>
 #ifdef _WIN32
 #include <SDL.h>
@@ -9,6 +10,8 @@
 #endif
 #include <stdexcept>
 #include <string>
+#include <optional>
+#include <list>
 #include <cstring>
 
 constexpr int WINDOW_WIDTH = 960;

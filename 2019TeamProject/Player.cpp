@@ -48,25 +48,19 @@ void Player::SetAnimationState(PlayerAnimation playerAnimation)
 void Player::UpdateAnimation()
 {
 	auto current_time = high_resolution_clock::now();
-	auto elapsed = duration<float, seconds::period>(current_time - mAnimationTimer).count();
+	auto elapsed = duration<float, seconds::period>(current_time - mAnimationTimer)
+		.count();
+	auto animation_elapsed = duration<float, seconds::period>(current_time - mAnimationStartTimer).count();
 
 	if (elapsed > 0.2f) {
-		switch (mCurrentAnimation)
-		{
-		case PlayerAnimation::Running:
-			break;
-		case PlayerAnimation::Guard:
-			break;
-		case PlayerAnimation::Parry:
-			break;
-		case PlayerAnimation::Injury:
-			break;
-		case PlayerAnimation::Beginning:
-			break;
-		default:
-			break;
-		}
+		mSprite->SetRenderXPos(mCurrentFrame * 128);
+		mCurrentFrame = (mCurrentFrame + 1) % 3;
 		mAnimationTimer = current_time;
+	}
+
+	if (mAnimationStarted && animation_elapsed > 0.6f) {
+		mAnimationStarted = false;
+		SetAnimationState(PlayerAnimation::Running);
 	}
 }
 
@@ -78,6 +72,22 @@ int Player::GetSpeed() const noexcept
 void Player::SetSpeed(int speed) noexcept
 {
 	mSpeed = speed;
+}
+
+int Player::GetWidth() const noexcept
+{
+    return mSprite->GetWidth();
+}
+
+void Player::SetAnimationStarted(bool started)
+{
+	mAnimationStarted = started;
+	mAnimationStartTimer = high_resolution_clock::now();
+}
+
+bool Player::GetAnimationStarted() const noexcept
+{
+	return mAnimationStarted;
 }
 
 Player::Player(const std::string& filePath, SDL_Renderer* renderer, int renderXPos, int renderYPos, int initialXPos, int initialYPos) :

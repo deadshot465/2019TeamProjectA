@@ -34,21 +34,54 @@ void CoreSystem::UpdatePlayer()
 	auto elapsed = duration<float, seconds::period>(current_time - start_time).count();
 
 	auto key_states = SDL_GetKeyboardState(nullptr);
-	auto res = mEnemy->CheckCollisions(mPlayer->GetCollisionBox());
-	
-	if (key_states[SDL_SCANCODE_SPACE]) {
-		if (res) mBackgroundMoveSpeed *= 1;
-		else mBackgroundMoveSpeed = 0;
-	}
-	else {
-		mBackgroundMoveSpeed = (WINDOW_WIDTH / 10) * 1;
-	}
+    auto parry_res = mEnemy->CheckParryCollisions(mPlayer->GetCollisionBox());
+    
+    if (parry_res.result && parry_res.projectile.has_value()) {
+        if (key_states[SDL_SCANCODE_SPACE]) {
+            mBackgroundMoveSpeed *= 1;
+            if (!(mPlayer->GetAnimationStarted())) {
+                mPlayer->SetAnimationState(PlayerAnimation::Parry);
+                mPlayer->SetAnimationStarted(true);
+                mEnemy->DestroyProjectile(parry_res.projectile.value());
+            }
+        }
+        if (parry_res.projectile.value()->get()->GetReferencePoint().x <
+            mPlayer->GetCollisionBox().x + mPlayer->GetWidth())
+            parry_res.projectile.value()->get()->SetParryCollisionBoxEnabled(false);
+    }
+    else {
+        auto res = mEnemy->CheckCollisions(mPlayer->GetCollisionBox());
+        
+        if (res.result && res.projectile.has_value()) {
+            if (key_states[SDL_SCANCODE_SPACE]) {
+                mBackgroundMoveSpeed = 0;
+                if (!(mPlayer->GetAnimationStarted())) {
+                    mPlayer->SetAnimationState(PlayerAnimation::Guard);
+                    mPlayer->SetAnimationStarted(true);
+                }
+            }
+            else {
+                mBackgroundMoveSpeed = (WINDOW_WIDTH / 10) * 1;
+                if (!(mPlayer->GetAnimationStarted())) {
+                    mPlayer->SetAnimationState(PlayerAnimation::Injury);
+                    mPlayer->SetAnimationStarted(true);
+                }
+            }
+            mEnemy->DestroyProjectile(res.projectile.value());
+        }
+    }
+
+	mPlayer->UpdateAnimation();
 }
 
 CoreSystem::CoreSystem(SDL_Window* window, const SDL_Rect& viewport) : mViewport(viewport)
 {
 	IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
+#ifdef _WIN32
 	mRenderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+#else
+    mRenderer = SDL_GetRenderer(window);
+#endif
 	mSpriteManager = std::make_unique<SpriteManager>();
 
 	mSpriteManager->LoadStaticSprite("texture/background_resized.png", mRenderer);
@@ -58,7 +91,7 @@ CoreSystem::CoreSystem(SDL_Window* window, const SDL_Rect& viewport) : mViewport
 	
 	mEnemy = std::make_unique<Enemy>("texture/boss1.png", mRenderer, 0, 0,
 		"texture/bullet.png", 0, 0);
-	mPlayer = std::make_unique<Player>("texture/player.png", mRenderer, 0, 0, 64, WINDOW_HEIGHT * 0.75f);
+	mPlayer = std::make_unique<Player>("texture/player_revised.png", mRenderer, 0, 0, 64, WINDOW_HEIGHT * 0.75f);
 	
 	mMixer = std::make_unique<Mixer>();
 }

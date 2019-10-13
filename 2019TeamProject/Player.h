@@ -15,6 +15,7 @@ class Player
 {
 private:
 	std::chrono::time_point<std::chrono::steady_clock> mAnimationTimer;
+	std::chrono::time_point<std::chrono::steady_clock> mAnimationStartTimer;
 
 	std::unique_ptr<Image> mSprite = nullptr;
 	int mSpeed = 25;
@@ -24,6 +25,7 @@ private:
 	
 	PlayerAnimation mCurrentAnimation = {};
 	int mCurrentFrame = 0;
+	bool mAnimationStarted = false;
 
 public:
 	Player(const std::string& filePath, SDL_Renderer* renderer,
@@ -38,5 +40,10 @@ public:
 
 	int GetSpeed() const noexcept;
 	void SetSpeed(int speed) noexcept;
+    
+    int GetWidth() const noexcept;
+
+	void SetAnimationStarted(bool started);
+	bool GetAnimationStarted() const noexcept;
 };
 

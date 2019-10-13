@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include <algorithm>
+#include <optional>
 
 using namespace std::chrono;
 
@@ -46,23 +47,43 @@ Enemy::~Enemy()
 	mSprite.reset();
 }
 
-bool Enemy::CheckCollisions(const SDL_Rect& playerCollisionBox) noexcept
+Projectile::CollisionResult Enemy::CheckCollisions(const SDL_Rect& playerCollisionBox) noexcept
 {
-	if (mProjectiles.empty()) return false;
+	if (mProjectiles.empty()) return { std::nullopt, false };
 
 	auto iter = mProjectiles.begin();
 	
 	while (iter != mProjectiles.end()) {
 		auto res = iter->get()->CheckCollision(playerCollisionBox);
 		if (res) {
-			iter = mProjectiles.erase(iter);
-			return res;
+			//iter = mProjectiles.erase(iter);
+			return { iter, res };
 		}
 		else {
 			++iter;
 		}
 	}
-    return false;
+	return { std::nullopt, false };
+}
+
+Projectile::CollisionResult Enemy::CheckParryCollisions(const SDL_Rect& playerCollisionBox) noexcept
+{
+	if (mProjectiles.empty()) return { std::nullopt, false };
+
+	auto iter = mProjectiles.begin();
+
+	while (iter != mProjectiles.end()) {
+		auto res = iter->get()->CheckParryCollision(playerCollisionBox);
+		if (res) {
+			//iter = mProjectiles.erase(iter);
+			iter->get()->SetParryCollisionBoxEnabled(false);
+			return { iter, res };
+		}
+		else {
+			++iter;
+		}
+	}
+	return { std::nullopt, false };
 }
 
 void Enemy::Update(SDL_Renderer* renderer, const RenderConfig& renderConfig)
@@ -100,9 +121,14 @@ void Enemy::Update(SDL_Renderer* renderer, const RenderConfig& renderConfig)
 		SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
 		SDL_RenderDrawRect(renderer, &(projectile->GetCollisionBox()));
 		SDL_SetRenderDrawColor(renderer, 0x00, 0xFF, 0x00, 0xFF);
-		SDL_RenderDrawRect(renderer, &(projectile->GetCollisionBox()));
+		SDL_RenderDrawRect(renderer, &(projectile->GetParryCollisionBox()));
 	}
 
 	mSprite->Render(renderer, renderConfig.xPos, renderConfig.yPos,
 		renderConfig.scaleX, renderConfig.scaleY);
+}
+
+void Enemy::DestroyProjectile(const std::list<std::unique_ptr<Projectile>>::iterator& iter)
+{
+	mProjectiles.erase(iter);
 }
