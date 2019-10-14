@@ -1,4 +1,5 @@
 #include "Mixer.h"
+#include <iostream>
 
 Mixer::Mixer()
 {

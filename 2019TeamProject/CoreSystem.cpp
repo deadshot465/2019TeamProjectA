@@ -98,6 +98,8 @@ CoreSystem::CoreSystem(SDL_Window* window, const SDL_Rect& viewport) : mViewport
 
 CoreSystem::~CoreSystem()
 {
+	mMixer.reset();
+	mPlayer.reset();
 	mEnemy.reset();
 	mSpriteManager.reset();
 	IMG_Quit();
@@ -121,7 +123,6 @@ void CoreSystem::Render()
 	static auto game_time = 0.0;
 	auto current_time = high_resolution_clock::now();
 	auto elapsed = duration<float, seconds::period>(current_time - start_time).count();
-	
 
 	try
 	{
