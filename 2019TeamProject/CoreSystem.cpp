@@ -43,10 +43,11 @@ void CoreSystem::UpdatePlayer()
                 mPlayer->SetAnimationState(PlayerAnimation::Parry);
                 mPlayer->SetAnimationStarted(true);
                 mEnemy->DestroyProjectile(parry_res.projectile.value());
+				return;
             }
         }
         if (parry_res.projectile.value()->get()->GetReferencePoint().x <
-            mPlayer->GetCollisionBox().x + mPlayer->GetWidth())
+            mPlayer->GetCollisionBox().x + (mPlayer->GetWidth() / 2))
             parry_res.projectile.value()->get()->SetParryCollisionBoxEnabled(false);
     }
     else {

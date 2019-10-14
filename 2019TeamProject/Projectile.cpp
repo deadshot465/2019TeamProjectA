@@ -19,7 +19,7 @@ Projectile::Projectile(int width, int height, int projectileXPos, int projectile
 	mCollisionBox.h = height;
 	mCollisionBox.w = width;
 
-	mParryCollisionBox.x = projectileXPos - 2 * width;
+	mParryCollisionBox.x = projectileXPos - width;
 	mParryCollisionBox.y = projectileYPos;
 	mParryCollisionBox.h = height;
 	mParryCollisionBox.w = width;
