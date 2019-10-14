@@ -74,6 +74,11 @@ void Player::SetSpeed(int speed) noexcept
 	mSpeed = speed;
 }
 
+int Player::GetWidth() const noexcept
+{
+    return mSprite->GetWidth();
+}
+
 void Player::SetAnimationStarted(bool started)
 {
 	mAnimationStarted = started;

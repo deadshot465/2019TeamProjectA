@@ -22,9 +22,9 @@ void CoreSystem::UpdateBackground()
 	}
 
 	if (mBackgroundPosition1.xPos <= -(WINDOW_WIDTH * 2))
-		mBackgroundPosition1.xPos = WINDOW_WIDTH;
+		mBackgroundPosition1.xPos = WINDOW_WIDTH * 2;
 	if (mBackgroundPosition2.xPos <= -(WINDOW_WIDTH * 2))
-		mBackgroundPosition2.xPos = WINDOW_WIDTH;
+		mBackgroundPosition2.xPos = WINDOW_WIDTH * 2;
 }
 
 void CoreSystem::UpdatePlayer()
@@ -34,59 +34,43 @@ void CoreSystem::UpdatePlayer()
 	auto elapsed = duration<float, seconds::period>(current_time - start_time).count();
 
 	auto key_states = SDL_GetKeyboardState(nullptr);
-	auto res = mEnemy->CheckCollisions(mPlayer->GetCollisionBox());
-	auto parry_res = mEnemy->CheckParryCollisions(mPlayer->GetCollisionBox());
-
-	if (!res.result &&
-		parry_res.result &&
-		parry_res.projectile.has_value()) {
-		if (key_states[SDL_SCANCODE_SPACE]) {
-			mBackgroundMoveSpeed *= 1;
-			if (!(mPlayer->GetAnimationStarted())) {
-				mPlayer->SetAnimationState(PlayerAnimation::Parry);
-				mPlayer->SetAnimationStarted(true);
-				mEnemy->DestroyProjectile(parry_res.projectile.value());
-			}
-		}
-	}
-
-	if (res.result && res.projectile.has_value()) {
-		if (key_states[SDL_SCANCODE_SPACE]) {
-			mBackgroundMoveSpeed = 0;
-			if (!(mPlayer->GetAnimationStarted())) {
-				mPlayer->SetAnimationState(PlayerAnimation::Guard);
-			}
-		}
-		else {
-			if (!(mPlayer->GetAnimationStarted())) {
-				mPlayer->SetAnimationState(PlayerAnimation::Injury);
-			}
-		}
-		mPlayer->SetAnimationStarted(true);
-		mEnemy->DestroyProjectile(parry_res.projectile.value());
-		mBackgroundMoveSpeed = (WINDOW_WIDTH / 10) * 1;
-	}
-	
-	/*if (key_states[SDL_SCANCODE_SPACE]) {
-		if (parry_res) {
-			
-		}
-		else {
-			mBackgroundMoveSpeed = 0;
-			if (!(mPlayer->GetAnimationStarted()))
-				mPlayer->SetAnimationState(PlayerAnimation::Guard);
-		}
-		mPlayer->SetAnimationStarted(true);
-	}
-	else {
-		if (res) {
-			if (!(mPlayer->GetAnimationStarted())) {
-				mPlayer->SetAnimationState(PlayerAnimation::Injury);
-				mPlayer->SetAnimationStarted(true);
-			}
-		}
-		mBackgroundMoveSpeed = (WINDOW_WIDTH / 10) * 1;
-	}*/
+    auto parry_res = mEnemy->CheckParryCollisions(mPlayer->GetCollisionBox());
+    
+    if (parry_res.result && parry_res.projectile.has_value()) {
+        if (key_states[SDL_SCANCODE_SPACE]) {
+            mBackgroundMoveSpeed *= 1;
+            if (!(mPlayer->GetAnimationStarted())) {
+                mPlayer->SetAnimationState(PlayerAnimation::Parry);
+                mPlayer->SetAnimationStarted(true);
+                mEnemy->DestroyProjectile(parry_res.projectile.value());
+				return;
+            }
+        }
+        if (parry_res.projectile.value()->get()->GetReferencePoint().x <
+            mPlayer->GetCollisionBox().x + (mPlayer->GetWidth() / 2))
+            parry_res.projectile.value()->get()->SetParryCollisionBoxEnabled(false);
+    }
+    else {
+        auto res = mEnemy->CheckCollisions(mPlayer->GetCollisionBox());
+        
+        if (res.result && res.projectile.has_value()) {
+            if (key_states[SDL_SCANCODE_SPACE]) {
+                mBackgroundMoveSpeed = 0;
+                if (!(mPlayer->GetAnimationStarted())) {
+                    mPlayer->SetAnimationState(PlayerAnimation::Guard);
+                    mPlayer->SetAnimationStarted(true);
+                }
+            }
+            else {
+                mBackgroundMoveSpeed = (WINDOW_WIDTH / 10) * 1;
+                if (!(mPlayer->GetAnimationStarted())) {
+                    mPlayer->SetAnimationState(PlayerAnimation::Injury);
+                    mPlayer->SetAnimationStarted(true);
+                }
+            }
+            mEnemy->DestroyProjectile(res.projectile.value());
+        }
+    }
 
 	mPlayer->UpdateAnimation();
 }
@@ -94,7 +78,11 @@ void CoreSystem::UpdatePlayer()
 CoreSystem::CoreSystem(SDL_Window* window, const SDL_Rect& viewport) : mViewport(viewport)
 {
 	IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
+#ifdef _WIN32
 	mRenderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+#else
+    mRenderer = SDL_GetRenderer(window);
+#endif
 	mSpriteManager = std::make_unique<SpriteManager>();
 
 	mSpriteManager->LoadStaticSprite("texture/background_resized.png", mRenderer);
@@ -104,13 +92,15 @@ CoreSystem::CoreSystem(SDL_Window* window, const SDL_Rect& viewport) : mViewport
 	
 	mEnemy = std::make_unique<Enemy>("texture/boss1.png", mRenderer, 0, 0,
 		"texture/bullet.png", 0, 0);
-	mPlayer = std::make_unique<Player>("texture/player_revised.png", mRenderer, 0, 0, 64, WINDOW_HEIGHT * 0.75f);
+	mPlayer = std::make_unique<Player>("texture/player_revised.png", mRenderer, 0, 0, 64, WINDOW_HEIGHT * 0.5f);
 	
 	mMixer = std::make_unique<Mixer>();
 }
 
 CoreSystem::~CoreSystem()
 {
+	mMixer.reset();
+	mPlayer.reset();
 	mEnemy.reset();
 	mSpriteManager.reset();
 	IMG_Quit();
@@ -134,7 +124,6 @@ void CoreSystem::Render()
 	static auto game_time = 0.0;
 	auto current_time = high_resolution_clock::now();
 	auto elapsed = duration<float, seconds::period>(current_time - start_time).count();
-	
 
 	try
 	{
@@ -164,8 +153,8 @@ void CoreSystem::Render()
 			{ 64, static_cast<int>(WINDOW_WIDTH * 0.05f), 1.0f, 1.0f }, angle);
 
 		mEnemy->Update(mRenderer,
-			{ static_cast<int>(mViewport.w * 0.6f),
-			static_cast<int>(mViewport.h * 0.65f), SCALE_SIZE, SCALE_SIZE });
+			{ static_cast<int>(mViewport.w * 0.8f),
+			static_cast<int>(mViewport.h * 0.5f), SCALE_SIZE, SCALE_SIZE });
 		
 		UpdatePlayer();
 		UpdateBackground();
