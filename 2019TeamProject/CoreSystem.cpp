@@ -153,7 +153,7 @@ void CoreSystem::Render()
 			{ 64, static_cast<int>(WINDOW_WIDTH * 0.05f), 1.0f, 1.0f }, angle);
 
 		mEnemy->Update(mRenderer,
-			{ static_cast<int>(mViewport.w * 0.45f),
+			{ static_cast<int>(mViewport.w * 0.8f),
 			static_cast<int>(mViewport.h * 0.5f), SCALE_SIZE, SCALE_SIZE });
 		
 		UpdatePlayer();
