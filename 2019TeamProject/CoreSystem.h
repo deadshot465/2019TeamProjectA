@@ -1,4 +1,5 @@
 #pragma once
+#include <chrono>
 #include <memory>
 #ifdef _WIN32
 #include <SDL.h>
@@ -26,6 +27,11 @@ private:
 	int mBackgroundMoveSpeed = WINDOW_WIDTH / 10;
 
 	SDL_Rect mViewport = {};
+	bool mGameClear = false;
+
+	std::chrono::time_point<std::chrono::steady_clock> mGameTimer;
+	float mClockAngle = 0.0f;
+	float mGameElapsedTime = 0.0f;
 	
 	void UpdateBackground();
 	void UpdatePlayer();
@@ -36,11 +42,14 @@ private:
 		Indicator,
 		Floor,
 		TitleScreenAppear,
-		TitleScreenDisappear
+		TitleScreenDisappear,
+		GameClearAppear,
+		GameClearDisappear
 	};
 
-	void LoadTitleScreen();
-	void LoadGameScreen();
+	void RenderTitleScreen();
+	void RenderGameScreen();
+	void RenderGameClearScreen();
 
 public:
 	CoreSystem(SDL_Window* window, const SDL_Rect& viewport);
@@ -48,5 +57,9 @@ public:
 
 	void ClearColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 0xFF);
 	void Render(SceneName scene);
+	
+	void SetGameClearState(bool state) noexcept;
+	bool GetGameClearState() const noexcept;
+	void ClearGameStates() noexcept;
 };
 

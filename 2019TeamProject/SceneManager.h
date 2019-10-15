@@ -13,8 +13,8 @@ public:
 	~SceneManager();
 
 	void GetScene(SceneName scene = SceneName::Title) noexcept;
-	
 	void Update() noexcept;
+	void ClearGameStates() noexcept;
 
 	const SceneName& GetCurrentScene() const noexcept;
 };

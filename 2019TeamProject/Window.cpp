@@ -4,6 +4,7 @@
 
 Window::~Window()
 {
+	mSceneManager.reset();
 	SDL_FreeSurface(mSurface);
 	SDL_DestroyWindow(mWindow);
 	SDL_Quit();
@@ -65,7 +66,9 @@ void Window::Broadcast()
 					case SceneName::Title:
 						mSceneManager->GetScene(SceneName::Game);
 						break;
-					case SceneName::Game:
+					case SceneName::GameClear:
+						mSceneManager->ClearGameStates();
+						mSceneManager->GetScene(SceneName::Title);
 						break;
 					default:
 						break;

@@ -1,5 +1,4 @@
 #include "CoreSystem.h"
-#include <chrono>
 #ifdef _WIN32
 #include <SDL_image.h>
 #else
@@ -29,10 +28,6 @@ void CoreSystem::UpdateBackground()
 
 void CoreSystem::UpdatePlayer()
 {
-	static auto start_time = high_resolution_clock::now();
-	auto current_time = high_resolution_clock::now();
-	auto elapsed = duration<float, seconds::period>(current_time - start_time).count();
-
 	auto key_states = SDL_GetKeyboardState(nullptr);
     auto parry_res = mEnemy->CheckParryCollisions(mPlayer->GetCollisionBox());
     
@@ -54,6 +49,7 @@ void CoreSystem::UpdatePlayer()
         auto res = mEnemy->CheckCollisions(mPlayer->GetCollisionBox());
         
         if (res.result && res.projectile.has_value()) {
+
             if (key_states[SDL_SCANCODE_SPACE]) {
                 mBackgroundMoveSpeed = 0;
                 if (!(mPlayer->GetAnimationStarted())) {
@@ -75,7 +71,7 @@ void CoreSystem::UpdatePlayer()
 	mPlayer->UpdateAnimation();
 }
 
-void CoreSystem::LoadTitleScreen()
+void CoreSystem::RenderTitleScreen()
 {
 	static auto start_time = high_resolution_clock::now();
 	auto current_time = high_resolution_clock::now();
@@ -89,13 +85,10 @@ void CoreSystem::LoadTitleScreen()
 		{ 0, 0, SCALE_SIZE, SCALE_SIZE });
 }
 
-void CoreSystem::LoadGameScreen()
+void CoreSystem::RenderGameScreen()
 {
-	static auto start_time = high_resolution_clock::now();
-	static auto angle = 6.0;
-	static auto game_time = 0.0;
 	auto current_time = high_resolution_clock::now();
-	auto elapsed = duration<float, seconds::period>(current_time - start_time).count();
+	auto elapsed = duration<float, seconds::period>(current_time - mGameTimer).count();
 
 	mSpriteManager->RenderStaticSprite(mRenderer,
 		static_cast<int>(StaticSpriteList::Background),
@@ -111,14 +104,14 @@ void CoreSystem::LoadGameScreen()
 		{ 64, static_cast<int>(WINDOW_WIDTH * 0.05f), 1.0f, 1.0f });
 
 	if (elapsed >= 1.0f) {
-		angle += 6.0;
-		start_time = current_time;
-		game_time += elapsed;
+		mClockAngle += 6.0;
+		mGameTimer = current_time;
+		mGameElapsedTime += elapsed;
 	}
 
 	mSpriteManager->RenderStaticSprite(mRenderer,
 		static_cast<int>(StaticSpriteList::Indicator),
-		{ 64, static_cast<int>(WINDOW_WIDTH * 0.05f), 1.0f, 1.0f }, angle);
+		{ 64, static_cast<int>(WINDOW_WIDTH * 0.05f), 1.0f, 1.0f }, mClockAngle);
 
 	mEnemy->Update(mRenderer,
 		{ static_cast<int>(mViewport.w * 0.8f),
@@ -130,9 +123,27 @@ void CoreSystem::LoadGameScreen()
 
 	SDL_SetRenderDrawColor(mRenderer, 0x00, 0x00, 0xFF, 0xFF);
 	SDL_RenderDrawRect(mRenderer, &(mPlayer->GetCollisionBox()));
+
+	if (mGameElapsedTime >= 60.0f)
+		mGameClear = true;
 }
 
-CoreSystem::CoreSystem(SDL_Window* window, const SDL_Rect& viewport) : mViewport(viewport)
+void CoreSystem::RenderGameClearScreen()
+{
+	static auto start_time = high_resolution_clock::now();
+	auto current_time = high_resolution_clock::now();
+	auto elapsed = duration<float, seconds::period>(current_time - start_time).count();
+
+	bool interval = (static_cast<int>(elapsed) % 2 == 0);
+
+	mSpriteManager->RenderStaticSprite(mRenderer,
+		interval ? static_cast<size_t>(StaticSpriteList::GameClearAppear) :
+		static_cast<size_t>(StaticSpriteList::GameClearDisappear),
+		{ 0, 0, SCALE_SIZE, SCALE_SIZE });
+}
+
+CoreSystem::CoreSystem(SDL_Window* window, const SDL_Rect& viewport)
+	: mViewport(viewport), mGameTimer(high_resolution_clock::now())
 {
 	IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
 #ifdef _WIN32
@@ -148,10 +159,12 @@ CoreSystem::CoreSystem(SDL_Window* window, const SDL_Rect& viewport) : mViewport
 	mSpriteManager->LoadStaticSprite("texture/floor.png", mRenderer);
 	mSpriteManager->LoadStaticSprite("texture/sample_title.png", mRenderer);
 	mSpriteManager->LoadStaticSprite("texture/sample_title_disappear.png", mRenderer);
+	mSpriteManager->LoadStaticSprite("texture/sample_game_clear.png", mRenderer);
+	mSpriteManager->LoadStaticSprite("texture/sample_game_clear_disappear.png", mRenderer);
 	
 	mEnemy = std::make_unique<Enemy>("texture/boss1.png", mRenderer, 0, 0,
 		"texture/bullet.png", 0, 0);
-	mPlayer = std::make_unique<Player>("texture/player_revised.png", mRenderer, 0, 0, 64, WINDOW_HEIGHT * 0.5f);
+	mPlayer = std::make_unique<Player>("texture/player_revised.png", mRenderer, 0, 0, 64, static_cast<int>(WINDOW_HEIGHT * 0.5f));
 	
 	mMixer = std::make_unique<Mixer>();
 }
@@ -185,12 +198,13 @@ void CoreSystem::Render(SceneName scene)
 		switch (scene)
 		{
 		case SceneName::Title:
-			LoadTitleScreen();
+			RenderTitleScreen();
 			break;
 		case SceneName::Game:
-			LoadGameScreen();
+			RenderGameScreen();
 			break;
 		case SceneName::GameClear:
+			RenderGameClearScreen();
 			break;
 		default:
 			break;
@@ -202,4 +216,22 @@ void CoreSystem::Render(SceneName scene)
 	{
 		throw;
 	}
+}
+
+void CoreSystem::SetGameClearState(bool state) noexcept
+{
+	mGameClear = state;
+}
+
+bool CoreSystem::GetGameClearState() const noexcept
+{
+	return mGameClear;
+}
+
+void CoreSystem::ClearGameStates() noexcept
+{
+	mGameClear = false;
+	mGameTimer = high_resolution_clock::now();
+	mClockAngle = 0.0f;
+	mGameElapsedTime = 0.0f;
 }
