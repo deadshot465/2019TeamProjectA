@@ -13,6 +13,7 @@ class SpriteManager
 {
 private:
 	std::vector<std::unique_ptr<Image>> mStaticSprites;
+	static constexpr int NUMBER_SPRITE_WIDTH = 64;
 
 public:
 	SpriteManager() = default;
@@ -22,5 +23,7 @@ public:
 
 	void RenderStaticSprite(SDL_Renderer* renderer, size_t index, const RenderConfig& renderConfig);
 	void RenderStaticSprite(SDL_Renderer* renderer, size_t index, const RenderConfig& renderConfig, double angle);
+	void RenderNumbers(SDL_Renderer* renderer, size_t index, int num,
+		const RenderConfig& renderConfig);
 };
 

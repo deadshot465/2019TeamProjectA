@@ -29,7 +29,7 @@ void CoreSystem::UpdateBackground()
 void CoreSystem::UpdatePlayer()
 {
 	auto key_states = SDL_GetKeyboardState(nullptr);
-    auto parry_res = mEnemy->CheckParryCollisions(mPlayer->GetCollisionBox());
+    auto parry_res = mCurrentEnemy->CheckParryCollisions(mPlayer->GetCollisionBox());
     
     if (parry_res.result && parry_res.projectile.has_value()) {
         if (key_states[SDL_SCANCODE_SPACE]) {
@@ -37,7 +37,8 @@ void CoreSystem::UpdatePlayer()
             if (!(mPlayer->GetAnimationStarted())) {
                 mPlayer->SetAnimationState(PlayerAnimation::Parry);
                 mPlayer->SetAnimationStarted(true);
-                mEnemy->DestroyProjectile(parry_res.projectile.value());
+                mCurrentEnemy->DestroyProjectile(parry_res.projectile.value());
+				++mPlayerComboCount;
 				return;
             }
         }
@@ -46,7 +47,7 @@ void CoreSystem::UpdatePlayer()
             parry_res.projectile.value()->get()->SetParryCollisionBoxEnabled(false);
     }
     else {
-        auto res = mEnemy->CheckCollisions(mPlayer->GetCollisionBox());
+        auto res = mCurrentEnemy->CheckCollisions(mPlayer->GetCollisionBox());
         
         if (res.result && res.projectile.has_value()) {
 
@@ -64,7 +65,7 @@ void CoreSystem::UpdatePlayer()
                     mPlayer->SetAnimationStarted(true);
                 }
             }
-            mEnemy->DestroyProjectile(res.projectile.value());
+            mCurrentEnemy->DestroyProjectile(res.projectile.value());
         }
     }
 
@@ -101,8 +102,12 @@ void CoreSystem::RenderGameScreen()
 		mBackgroundPosition2);
 	mSpriteManager->RenderStaticSprite(mRenderer,
 		static_cast<int>(StaticSpriteList::Clock),
-		{ 64, static_cast<int>(WINDOW_WIDTH * 0.05f), 1.0f, 1.0f });
-
+		{ 64, static_cast<int>(WINDOW_HEIGHT * 0.05f), 1.0f, 1.0f });
+	mSpriteManager->RenderNumbers(mRenderer,
+		static_cast<int>(StaticSpriteList::ComboCount), mPlayerComboCount,
+		{ WINDOW_WIDTH - 64,
+		static_cast<int>(WINDOW_HEIGHT * 0.05f), 1.0f, 1.0f });
+		
 	if (elapsed >= 1.0f) {
 		mClockAngle += 6.0;
 		mGameTimer = current_time;
@@ -113,7 +118,7 @@ void CoreSystem::RenderGameScreen()
 		static_cast<int>(StaticSpriteList::Indicator),
 		{ 64, static_cast<int>(WINDOW_WIDTH * 0.05f), 1.0f, 1.0f }, mClockAngle);
 
-	mEnemy->Update(mRenderer,
+	mCurrentEnemy->Update(mRenderer,
 		{ static_cast<int>(mViewport.w * 0.8f),
 		static_cast<int>(mViewport.h * 0.5f), SCALE_SIZE, SCALE_SIZE });
 
@@ -161,10 +166,18 @@ CoreSystem::CoreSystem(SDL_Window* window, const SDL_Rect& viewport)
 	mSpriteManager->LoadStaticSprite("texture/sample_title_disappear.png", mRenderer);
 	mSpriteManager->LoadStaticSprite("texture/sample_game_clear.png", mRenderer);
 	mSpriteManager->LoadStaticSprite("texture/sample_game_clear_disappear.png", mRenderer);
+	mSpriteManager->LoadStaticSprite("texture/numbers.png", mRenderer);
 	
-	mEnemy = std::make_unique<Enemy>("texture/boss1.png", mRenderer, 0, 0,
-		"texture/bullet.png", 0, 0);
+	mEnemies.emplace_back(std::make_unique<Enemy>("texture/boss1.png", mRenderer, 0, 0,
+		"texture/bullet.png", 0, 0));
+	mEnemies.emplace_back(std::make_unique<Enemy>("texture/boss2.png", mRenderer, 0, 0,
+		"texture/bullet.png", 0, 0));
+	mEnemies.emplace_back(std::make_unique<Enemy>("texture/boss3.png", mRenderer, 0, 0,
+		"texture/bullet.png", 0, 0));
 	mPlayer = std::make_unique<Player>("texture/player_revised.png", mRenderer, 0, 0, 64, static_cast<int>(WINDOW_HEIGHT * 0.5f));
+
+	mCurrentEnemyIndex = GetRandomIntegerNumber<int>(0, mEnemies.size() - 1);
+	mCurrentEnemy = mEnemies[mCurrentEnemyIndex].get();
 	
 	mMixer = std::make_unique<Mixer>();
 }
@@ -172,8 +185,12 @@ CoreSystem::CoreSystem(SDL_Window* window, const SDL_Rect& viewport)
 CoreSystem::~CoreSystem()
 {
 	mMixer.reset();
+	
+	for (auto& enemy : mEnemies) {
+		enemy.reset();
+	}
+
 	mPlayer.reset();
-	mEnemy.reset();
 	mSpriteManager.reset();
 	IMG_Quit();
 	SDL_DestroyRenderer(mRenderer);
@@ -230,6 +247,9 @@ bool CoreSystem::GetGameClearState() const noexcept
 
 void CoreSystem::ClearGameStates() noexcept
 {
+	mPlayerComboCount = 0;
+	mCurrentEnemyIndex = GetRandomIntegerNumber<int>(0, mEnemies.size() - 1);
+	mCurrentEnemy = mEnemies[mCurrentEnemyIndex].get();
 	mGameClear = false;
 	mGameTimer = high_resolution_clock::now();
 	mClockAngle = 0.0f;

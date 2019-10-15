@@ -6,6 +6,7 @@
 #else
 #include <SDL2/SDL.h>
 #endif
+#include <vector>
 #include "Enemy.h"
 #include "Helper.h"
 #include "Mixer.h"
@@ -18,7 +19,8 @@ private:
 	SDL_Renderer* mRenderer = nullptr;
 
 	std::unique_ptr<SpriteManager> mSpriteManager = nullptr;
-	std::unique_ptr<Enemy> mEnemy = nullptr;
+	std::vector<std::unique_ptr<Enemy>> mEnemies;
+	Enemy* mCurrentEnemy = nullptr;
 	std::unique_ptr<Player> mPlayer = nullptr;
 	std::unique_ptr<Mixer> mMixer = nullptr;
 
@@ -27,11 +29,13 @@ private:
 	int mBackgroundMoveSpeed = WINDOW_WIDTH / 10;
 
 	SDL_Rect mViewport = {};
+	
 	bool mGameClear = false;
-
 	std::chrono::time_point<std::chrono::steady_clock> mGameTimer;
 	float mClockAngle = 0.0f;
 	float mGameElapsedTime = 0.0f;
+	size_t mCurrentEnemyIndex = 0;
+	int mPlayerComboCount = 0;
 	
 	void UpdateBackground();
 	void UpdatePlayer();
@@ -44,7 +48,8 @@ private:
 		TitleScreenAppear,
 		TitleScreenDisappear,
 		GameClearAppear,
-		GameClearDisappear
+		GameClearDisappear,
+		ComboCount
 	};
 
 	void RenderTitleScreen();

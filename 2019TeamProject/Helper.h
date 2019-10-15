@@ -69,3 +69,10 @@ inline T GetRandomFloatNumber(T lower, T upper) {
 	auto generator = std::uniform_real_distribution<>(lower, upper);
 	return static_cast<T>(generator(engine));
 }
+
+template <typename T = int>
+inline T GetRandomIntegerNumber(T lower, T upper) {
+	auto engine = GetRandomSeededEngine();
+	auto generator = std::uniform_int_distribution<T>(lower, upper);
+	return generator(engine);
+}
