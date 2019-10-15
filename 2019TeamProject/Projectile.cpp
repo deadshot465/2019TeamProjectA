@@ -5,6 +5,7 @@ void Projectile::Update()
 	mRenderConfig.xPos += mSpeed;
 	mCollisionBox.x += mSpeed;
 	mParryCollisionBox.x += mSpeed;
+	mParryCollisionBoxReferencePoint.x += mSpeed;
 }
 
 void Projectile::SetParryCollisionBoxEnabled(bool status) noexcept

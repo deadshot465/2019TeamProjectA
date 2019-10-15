@@ -37,6 +37,12 @@ enum class SoundList {
 	Scream
 };
 
+enum class SceneName {
+	Title,
+	Game,
+	GameClear
+};
+
 inline void ThrowIfFailed(int result, const std::string& message) {
 	if (result < 0) {
 

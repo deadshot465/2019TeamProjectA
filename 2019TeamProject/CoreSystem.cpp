@@ -47,7 +47,7 @@ void CoreSystem::UpdatePlayer()
             }
         }
         if (parry_res.projectile.value()->get()->GetReferencePoint().x <
-            mPlayer->GetCollisionBox().x + (mPlayer->GetWidth() / 2))
+            mPlayer->GetCollisionBox().x + (mPlayer->GetWidth()))
             parry_res.projectile.value()->get()->SetParryCollisionBoxEnabled(false);
     }
     else {

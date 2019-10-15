@@ -75,8 +75,6 @@ Projectile::CollisionResult Enemy::CheckParryCollisions(const SDL_Rect& playerCo
 	while (iter != mProjectiles.end()) {
 		auto res = iter->get()->CheckParryCollision(playerCollisionBox);
 		if (res) {
-			//iter = mProjectiles.erase(iter);
-			iter->get()->SetParryCollisionBoxEnabled(false);
 			return { iter, res };
 		}
 		else {
