@@ -37,6 +37,12 @@ enum class SoundList {
 	Scream
 };
 
+enum class SceneName {
+	Title,
+	Game,
+	GameClear
+};
+
 inline void ThrowIfFailed(int result, const std::string& message) {
 	if (result < 0) {
 
@@ -62,4 +68,11 @@ inline T GetRandomFloatNumber(T lower, T upper) {
 	auto engine = GetRandomSeededEngine();
 	auto generator = std::uniform_real_distribution<>(lower, upper);
 	return static_cast<T>(generator(engine));
+}
+
+template <typename T = int>
+inline T GetRandomIntegerNumber(T lower, T upper) {
+	auto engine = GetRandomSeededEngine();
+	auto generator = std::uniform_int_distribution<T>(lower, upper);
+	return generator(engine);
 }

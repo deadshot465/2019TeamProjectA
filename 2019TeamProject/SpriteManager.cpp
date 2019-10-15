@@ -1,4 +1,5 @@
 #include "SpriteManager.h"
+#include <cassert>
 
 SpriteManager::~SpriteManager()
 {
@@ -33,6 +34,24 @@ void SpriteManager::RenderStaticSprite(SDL_Renderer* renderer, size_t index, con
 		mStaticSprites[index]->Render(renderer,
 			renderConfig.xPos, renderConfig.yPos,
 			renderConfig.scaleX, renderConfig.scaleY, angle);
+	}
+	catch (const std::exception&)
+	{
+		throw;
+	}
+}
+
+void SpriteManager::RenderNumbers(SDL_Renderer* renderer, size_t index, int num, const RenderConfig& renderConfig)
+{
+	try
+	{
+		assert(num >= 0 && num <= 9);
+
+		mStaticSprites[index]->SetRenderXPos(num * NUMBER_SPRITE_WIDTH);
+
+		mStaticSprites[index]->Render(renderer,
+			renderConfig.xPos, renderConfig.yPos,
+			renderConfig.scaleX, renderConfig.scaleY);
 	}
 	catch (const std::exception&)
 	{
