@@ -34,14 +34,19 @@ private:
 		Background,
 		Clock,
 		Indicator,
-		Floor
+		Floor,
+		TitleScreenAppear,
+		TitleScreenDisappear
 	};
+
+	void LoadTitleScreen();
+	void LoadGameScreen();
 
 public:
 	CoreSystem(SDL_Window* window, const SDL_Rect& viewport);
 	~CoreSystem();
 
 	void ClearColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 0xFF);
-	void Render();
+	void Render(SceneName scene);
 };
 

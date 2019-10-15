@@ -75,6 +75,63 @@ void CoreSystem::UpdatePlayer()
 	mPlayer->UpdateAnimation();
 }
 
+void CoreSystem::LoadTitleScreen()
+{
+	static auto start_time = high_resolution_clock::now();
+	auto current_time = high_resolution_clock::now();
+	auto elapsed = duration<float, seconds::period>(current_time - start_time).count();
+
+	bool interval = (static_cast<int>(elapsed) % 2 == 0);
+
+	mSpriteManager->RenderStaticSprite(mRenderer,
+		interval ? static_cast<size_t>(StaticSpriteList::TitleScreenAppear) :
+		static_cast<size_t>(StaticSpriteList::TitleScreenDisappear),
+		{ 0, 0, SCALE_SIZE, SCALE_SIZE });
+}
+
+void CoreSystem::LoadGameScreen()
+{
+	static auto start_time = high_resolution_clock::now();
+	static auto angle = 6.0;
+	static auto game_time = 0.0;
+	auto current_time = high_resolution_clock::now();
+	auto elapsed = duration<float, seconds::period>(current_time - start_time).count();
+
+	mSpriteManager->RenderStaticSprite(mRenderer,
+		static_cast<int>(StaticSpriteList::Background),
+		{ 0, 0, SCALE_SIZE, SCALE_SIZE });
+	mSpriteManager->RenderStaticSprite(mRenderer,
+		static_cast<int>(StaticSpriteList::Floor),
+		mBackgroundPosition1);
+	mSpriteManager->RenderStaticSprite(mRenderer,
+		static_cast<int>(StaticSpriteList::Floor),
+		mBackgroundPosition2);
+	mSpriteManager->RenderStaticSprite(mRenderer,
+		static_cast<int>(StaticSpriteList::Clock),
+		{ 64, static_cast<int>(WINDOW_WIDTH * 0.05f), 1.0f, 1.0f });
+
+	if (elapsed >= 1.0f) {
+		angle += 6.0;
+		start_time = current_time;
+		game_time += elapsed;
+	}
+
+	mSpriteManager->RenderStaticSprite(mRenderer,
+		static_cast<int>(StaticSpriteList::Indicator),
+		{ 64, static_cast<int>(WINDOW_WIDTH * 0.05f), 1.0f, 1.0f }, angle);
+
+	mEnemy->Update(mRenderer,
+		{ static_cast<int>(mViewport.w * 0.8f),
+		static_cast<int>(mViewport.h * 0.5f), SCALE_SIZE, SCALE_SIZE });
+
+	UpdatePlayer();
+	UpdateBackground();
+	mPlayer->Render(mRenderer);
+
+	SDL_SetRenderDrawColor(mRenderer, 0x00, 0x00, 0xFF, 0xFF);
+	SDL_RenderDrawRect(mRenderer, &(mPlayer->GetCollisionBox()));
+}
+
 CoreSystem::CoreSystem(SDL_Window* window, const SDL_Rect& viewport) : mViewport(viewport)
 {
 	IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
@@ -89,6 +146,8 @@ CoreSystem::CoreSystem(SDL_Window* window, const SDL_Rect& viewport) : mViewport
 	mSpriteManager->LoadStaticSprite("texture/sample_clock.png", mRenderer);
 	mSpriteManager->LoadStaticSprite("texture/sample_indicator.png", mRenderer);
 	mSpriteManager->LoadStaticSprite("texture/floor.png", mRenderer);
+	mSpriteManager->LoadStaticSprite("texture/sample_title.png", mRenderer);
+	mSpriteManager->LoadStaticSprite("texture/sample_title_disappear.png", mRenderer);
 	
 	mEnemy = std::make_unique<Enemy>("texture/boss1.png", mRenderer, 0, 0,
 		"texture/bullet.png", 0, 0);
@@ -117,51 +176,26 @@ void CoreSystem::ClearColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 	ThrowIfFailed(SDL_RenderClear(mRenderer), "SDL failed to clear the renderer.\n");
 }
 
-void CoreSystem::Render()
+void CoreSystem::Render(SceneName scene)
 {
-	static auto start_time = high_resolution_clock::now();
-	static auto angle = 6.0;
-	static auto game_time = 0.0;
-	auto current_time = high_resolution_clock::now();
-	auto elapsed = duration<float, seconds::period>(current_time - start_time).count();
-
 	try
 	{
 		assert(mRenderer);
 
-		mSpriteManager->RenderStaticSprite(mRenderer,
-			static_cast<int>(StaticSpriteList::Background),
-			{ 0, 0, SCALE_SIZE, SCALE_SIZE });
-		mSpriteManager->RenderStaticSprite(mRenderer,
-			static_cast<int>(StaticSpriteList::Floor),
-			mBackgroundPosition1);
-		mSpriteManager->RenderStaticSprite(mRenderer,
-			static_cast<int>(StaticSpriteList::Floor),
-			mBackgroundPosition2);
-		mSpriteManager->RenderStaticSprite(mRenderer,
-			static_cast<int>(StaticSpriteList::Clock),
-			{ 64, static_cast<int>(WINDOW_WIDTH * 0.05f), 1.0f, 1.0f });
-
-		if (elapsed >= 1.0f) {
-			angle += 6.0;
-			start_time = current_time;
-			game_time += elapsed;
+		switch (scene)
+		{
+		case SceneName::Title:
+			LoadTitleScreen();
+			break;
+		case SceneName::Game:
+			LoadGameScreen();
+			break;
+		case SceneName::GameClear:
+			break;
+		default:
+			break;
 		}
-
-		mSpriteManager->RenderStaticSprite(mRenderer,
-			static_cast<int>(StaticSpriteList::Indicator),
-			{ 64, static_cast<int>(WINDOW_WIDTH * 0.05f), 1.0f, 1.0f }, angle);
-
-		mEnemy->Update(mRenderer,
-			{ static_cast<int>(mViewport.w * 0.8f),
-			static_cast<int>(mViewport.h * 0.5f), SCALE_SIZE, SCALE_SIZE });
 		
-		UpdatePlayer();
-		UpdateBackground();
-		mPlayer->Render(mRenderer);
-
-		SDL_SetRenderDrawColor(mRenderer, 0x00, 0x00, 0xFF, 0xFF);
-		SDL_RenderDrawRect(mRenderer, &(mPlayer->GetCollisionBox()));
 		SDL_RenderPresent(mRenderer);
 	}
 	catch (const std::exception&)

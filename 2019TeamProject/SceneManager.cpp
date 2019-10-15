@@ -28,15 +28,11 @@ void SceneManager::GetScene(SceneName scene) noexcept
 
 void SceneManager::Update() noexcept
 {
-	switch (mCurrentScene)
-	{
-	case SceneName::Title:
-		break;
-	case SceneName::Game:
-		break;
-	case SceneName::GameClear:
-		break;
-	default:
-		break;
-	}
+	mCoreSystem.ClearColor(0xFF, 0x00, 0xFF);
+	mCoreSystem.Render(mCurrentScene);
+}
+
+const SceneName& SceneManager::GetCurrentScene() const noexcept
+{
+	return mCurrentScene;
 }

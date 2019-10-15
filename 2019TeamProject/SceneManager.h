@@ -6,13 +6,15 @@ class SceneManager
 {
 private:
 	CoreSystem mCoreSystem;
-	SceneName mCurrentScene = {};
+	SceneName mCurrentScene = SceneName::Title;
 
 public:
 	SceneManager(SDL_Window* window, const SDL_Rect& viewport);
 	~SceneManager();
 
-	void GetScene(SceneName scene) noexcept;
+	void GetScene(SceneName scene = SceneName::Title) noexcept;
 	
 	void Update() noexcept;
+
+	const SceneName& GetCurrentScene() const noexcept;
 };
