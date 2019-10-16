@@ -138,7 +138,7 @@ void CoreSystem::RenderGameScreen()
 
 	mCurrentEnemy->Update(mRenderer,
 		{ static_cast<int>(mViewport.w * 0.8f),
-		static_cast<int>(mViewport.h * 0.5f), SCALE_SIZE, SCALE_SIZE });
+		static_cast<int>(mViewport.h * 0.4f), SCALE_SIZE, SCALE_SIZE });
 
 	UpdatePlayer();
 	UpdateBackground();
@@ -192,7 +192,7 @@ CoreSystem::CoreSystem(SDL_Window* window, const SDL_Rect& viewport)
 		"texture/bullet.png", 0, 0, 0));
 	mEnemies.emplace_back(std::make_unique<Enemy>("texture/boss3.png", mRenderer, 0, 0,
 		"texture/bullet.png", 0, 0, 64));
-	mPlayer = std::make_unique<Player>("texture/player_revised.png", mRenderer, 0, 0, 64, static_cast<int>(WINDOW_HEIGHT * 0.5f));
+	mPlayer = std::make_unique<Player>("texture/player_revised.png", mRenderer, 0, 0, 64, static_cast<int>(WINDOW_HEIGHT * 0.4f));
 
 	mCurrentEnemyIndex = GetRandomIntegerNumber<int>(0, mEnemies.size() - 1);
 	mCurrentEnemy = mEnemies[mCurrentEnemyIndex].get();

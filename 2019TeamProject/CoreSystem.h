@@ -24,10 +24,10 @@ private:
 	std::unique_ptr<Player> mPlayer = nullptr;
 	std::unique_ptr<Mixer> mMixer = nullptr;
 
-	RenderConfig mFloorPosition1 = { 0, WINDOW_HEIGHT - 128, SCALE_SIZE, SCALE_SIZE };
-	RenderConfig mFloorPosition2 = { WINDOW_WIDTH * 2, WINDOW_HEIGHT - 128, SCALE_SIZE, SCALE_SIZE };
+	RenderConfig mFloorPosition1 = { 0, 0, SCALE_SIZE, SCALE_SIZE };
+	RenderConfig mFloorPosition2 = { WINDOW_WIDTH * 2, 0, SCALE_SIZE, SCALE_SIZE };
     int mBackgroundPosition = 0.0f;
-	int mBackgroundMoveSpeed = WINDOW_WIDTH / 100;
+	int mBackgroundMoveSpeed = -1;
     int mFloorMoveSpeed = FLOOR_MOVE_SPEED;
 
 	SDL_Rect mViewport = {};
