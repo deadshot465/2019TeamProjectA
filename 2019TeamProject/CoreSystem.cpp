@@ -15,20 +15,22 @@ void CoreSystem::UpdateBackground()
 	auto elapsed = duration<float, seconds::period>(current_time - start_time).count();
 
 	if (elapsed > 1.0f) {
-		mBackgroundPosition1.xPos -= mBackgroundMoveSpeed;
-		mBackgroundPosition2.xPos -= mBackgroundMoveSpeed;
+		mFloorPosition1.xPos -= mFloorMoveSpeed;
+		mFloorPosition2.xPos -= mFloorMoveSpeed;
+        mBackgroundPosition -= mBackgroundMoveSpeed;
 		start_time = current_time;
 	}
 
-	if (mBackgroundPosition1.xPos <= -(WINDOW_WIDTH * 2))
-		mBackgroundPosition1.xPos = WINDOW_WIDTH * 2;
-	if (mBackgroundPosition2.xPos <= -(WINDOW_WIDTH * 2))
-		mBackgroundPosition2.xPos = WINDOW_WIDTH * 2;
+	if (mFloorPosition1.xPos <= -(WINDOW_WIDTH * 2))
+		mFloorPosition1.xPos = WINDOW_WIDTH * 2;
+	if (mFloorPosition2.xPos <= -(WINDOW_WIDTH * 2))
+		mFloorPosition2.xPos = WINDOW_WIDTH * 2;
 }
 
 void CoreSystem::UpdatePlayer()
 {
-    if (!mPlayer->GetAnimationStarted()) mBackgroundMoveSpeed = BACKGROUND_MOVE_SPEED;
+    if (!mPlayer->GetAnimationStarted()) mFloorMoveSpeed = FLOOR_MOVE_SPEED;
+    if (!mPlayer->GetAnimationStarted()) mBackgroundMoveSpeed = WINDOW_WIDTH / 100;
 	auto key_states = SDL_GetKeyboardState(nullptr);
     auto parry_res = mCurrentEnemy->CheckParryCollisions(mPlayer->GetCollisionBox());
     
@@ -52,7 +54,8 @@ void CoreSystem::UpdatePlayer()
         if (res.result && res.projectile.has_value()) {
                 
                 if (!(mPlayer->GetAnimationStarted())) {
-                    mBackgroundMoveSpeed = BACKGROUND_BACK_SPEED;
+                    mFloorMoveSpeed = FLOOR_BACK_SPEED;
+                    mBackgroundMoveSpeed = 0;
                     mPlayer->SetAnimationState(PlayerAnimation::Injury);
                     mPlayer->SetAnimationStarted(true);
                 }
@@ -86,13 +89,13 @@ void CoreSystem::RenderGameScreen()
 
 	mSpriteManager->RenderStaticSprite(mRenderer,
 		static_cast<int>(StaticSpriteList::Background),
-		{ 0, 0, SCALE_SIZE, SCALE_SIZE });
+		{ mBackgroundPosition, 0, SCALE_SIZE, SCALE_SIZE });
 	mSpriteManager->RenderStaticSprite(mRenderer,
 		static_cast<int>(StaticSpriteList::Floor),
-		mBackgroundPosition1);
+		mFloorPosition1);
 	mSpriteManager->RenderStaticSprite(mRenderer,
 		static_cast<int>(StaticSpriteList::Floor),
-		mBackgroundPosition2);
+		mFloorPosition2);
 	mSpriteManager->RenderStaticSprite(mRenderer,
 		static_cast<int>(StaticSpriteList::Clock),
 		{ 64, static_cast<int>(WINDOW_HEIGHT * 0.05f), 1.0f, 1.0f });
@@ -248,4 +251,5 @@ void CoreSystem::ClearGameStates() noexcept
 	mGameTimer = high_resolution_clock::now();
 	mClockAngle = 0.0f;
 	mGameElapsedTime = 0.0f;
+    mBackgroundPosition = 0;
 }
