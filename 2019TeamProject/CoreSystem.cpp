@@ -40,7 +40,7 @@ void CoreSystem::UpdatePlayer()
                 mPlayer->SetAnimationState(PlayerAnimation::Parry);
                 mPlayer->SetAnimationStarted(true);
                 mCurrentEnemy->DestroyProjectile(parry_res.projectile.value());
-				++mPlayerComboCount;
+				mPlayerScore += PARRY_SCORE;
 				return;
             }
         }
@@ -84,6 +84,20 @@ void CoreSystem::UpdatePlayer()
 		mCurrentEnemy->DestroySpecialProjectile(special_res.projectile.value());
 	}
 
+	if (mCurrentEnemy->CheckSelfCollision(mPlayer->GetCollisionBox())) {
+		if (key_states[SDL_SCANCODE_SPACE]) {
+			mCurrentEnemyIndex = GetRandomIntegerNumber<int>(0, mEnemies.size() - 1);
+			mCurrentEnemy = mEnemies[mCurrentEnemyIndex].get();
+			mPlayerScore += 300;
+		}
+		else {
+			if (!(mPlayer->GetAnimationStarted())) {
+				mPlayer->SetAnimationState(PlayerAnimation::Injury);
+				mPlayer->SetAnimationStarted(true);
+			}
+		}
+	}
+
 	mPlayer->UpdateAnimation();
 }
 
@@ -104,7 +118,6 @@ void CoreSystem::RenderTitleScreen()
 void CoreSystem::RenderGameScreen()
 {
     
-
 	auto current_time = high_resolution_clock::now();
 	auto elapsed = duration<float, seconds::period>(current_time - mGameTimer).count();
 
@@ -120,9 +133,26 @@ void CoreSystem::RenderGameScreen()
 	mSpriteManager->RenderStaticSprite(mRenderer,
 		static_cast<int>(StaticSpriteList::Clock),
 		{ 64, static_cast<int>(WINDOW_HEIGHT * 0.05f), 1.0f, 1.0f });
+
 	mSpriteManager->RenderNumbers(mRenderer,
-		static_cast<int>(StaticSpriteList::ComboCount), mPlayerComboCount,
+		static_cast<int>(StaticSpriteList::ComboCount), mPlayerScore / 1 % 10,
 		{ WINDOW_WIDTH - 128,
+		static_cast<int>(WINDOW_HEIGHT * 0.05f), 1.0f, 1.0f });
+	mSpriteManager->RenderNumbers(mRenderer,
+		static_cast<int>(StaticSpriteList::ComboCount), mPlayerScore / 10 % 10,
+		{ WINDOW_WIDTH - 192,
+		static_cast<int>(WINDOW_HEIGHT * 0.05f), 1.0f, 1.0f });
+	mSpriteManager->RenderNumbers(mRenderer,
+		static_cast<int>(StaticSpriteList::ComboCount), mPlayerScore / 100 % 10,
+		{ WINDOW_WIDTH - 256,
+		static_cast<int>(WINDOW_HEIGHT * 0.05f), 1.0f, 1.0f });
+	mSpriteManager->RenderNumbers(mRenderer,
+		static_cast<int>(StaticSpriteList::ComboCount), mPlayerScore / 1000 % 10,
+		{ WINDOW_WIDTH - 320,
+		static_cast<int>(WINDOW_HEIGHT * 0.05f), 1.0f, 1.0f });
+	mSpriteManager->RenderNumbers(mRenderer,
+		static_cast<int>(StaticSpriteList::ComboCount), mPlayerScore / 10000 % 10,
+		{ WINDOW_WIDTH - 384,
 		static_cast<int>(WINDOW_HEIGHT * 0.05f), 1.0f, 1.0f });
 		
 	if (elapsed >= 1.0f) {
@@ -135,7 +165,6 @@ void CoreSystem::RenderGameScreen()
 		static_cast<int>(StaticSpriteList::Indicator),
 		{ 64, static_cast<int>(WINDOW_WIDTH * 0.03f), 1.0f, 1.0f }, mClockAngle);
 
-
 	mCurrentEnemy->Update(mRenderer,
 		{ static_cast<int>(mViewport.w * 0.8f),
 		static_cast<int>(mViewport.h * 0.5f), SCALE_SIZE, SCALE_SIZE });
@@ -147,8 +176,6 @@ void CoreSystem::RenderGameScreen()
 	SDL_SetRenderDrawColor(mRenderer, 0x00, 0x00, 0xFF, 0xFF);
 	SDL_RenderDrawRect(mRenderer, &(mPlayer->GetCollisionBox()));
 
-	if (mGameElapsedTime >= 60.0f)
-		mGameClear = true;
 }
 
 void CoreSystem::RenderGameClearScreen()
@@ -265,7 +292,7 @@ bool CoreSystem::GetGameClearState() const noexcept
 
 void CoreSystem::ClearGameStates() noexcept
 {
-	mPlayerComboCount = 0;
+	mPlayerScore = 0;
 	mCurrentEnemyIndex = GetRandomIntegerNumber<int>(0, mEnemies.size() - 1);
 	mCurrentEnemy = mEnemies[mCurrentEnemyIndex].get();
 	mGameClear = false;

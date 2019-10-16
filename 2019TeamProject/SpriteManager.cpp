@@ -47,8 +47,6 @@ void SpriteManager::RenderNumbers(SDL_Renderer* renderer, size_t index, int num,
 {
 	try
 	{
-		assert(num >= 0 && num <= 9);
-
 		mStaticSprites[index]->SetRenderXPos(num * NUMBER_SPRITE_WIDTH);
 
 		mStaticSprites[index]->Render(renderer,
