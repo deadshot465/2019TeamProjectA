@@ -30,7 +30,7 @@ void Enemy::UpdateProjectiles()
 Enemy::Enemy(const std::string& filePath, SDL_Renderer* renderer,
 	int renderXPos, int renderYPos,
 	const std::string& projectileFilePath,
-	int projectileXPos, int projectileYPos) :
+	int projectileXPos, int projectileYPos, int projectileRenderXPos) :
 	mAttackStartTime(high_resolution_clock::now()),
 	mProjectileStartTime(high_resolution_clock::now()),
 	mAttackDuration(GetRandomFloatNumber<float>(1.0f, 5.0f))
@@ -38,7 +38,7 @@ Enemy::Enemy(const std::string& filePath, SDL_Renderer* renderer,
 	mSprite = std::make_unique<Image>(filePath, renderer, renderXPos, renderYPos, true,
 		128, 128);
 	mProjectile = std::make_unique<Image>(projectileFilePath, renderer, projectileXPos, projectileYPos, true, 32, 32);
-	mProjectile->SetRenderXPos(32);
+	mProjectile->SetRenderXPos(projectileRenderXPos);
 }
 
 Enemy::~Enemy()

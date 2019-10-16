@@ -28,7 +28,7 @@ public:
 	Enemy(const std::string& filePath, SDL_Renderer* renderer,
 		int renderXPos, int renderYPos,
 		const std::string& projectileFilePath,
-		int projectileXPos, int projectileYPos);
+		int projectileXPos, int projectileYPos, int projectileRenderXPos = 32);
 	~Enemy();
 
 	Projectile::CollisionResult CheckCollisions(const SDL_Rect& playerCollisionBox) noexcept;
