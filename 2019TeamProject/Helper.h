@@ -20,6 +20,9 @@ constexpr float SCALE_SIZE = 1.0f;
 constexpr int FLOOR_MOVE_SPEED = 100;
 constexpr int FLOOR_BACK_SPEED = -FLOOR_MOVE_SPEED;
 constexpr int FLOOR_STOP_SPEED = 0;
+constexpr int PARRY_SCORE = 200;
+constexpr int GUARD_SCORE = 100;
+constexpr int BOSS_SCORE = 300;
 
 struct RenderConfig {
 	int xPos;

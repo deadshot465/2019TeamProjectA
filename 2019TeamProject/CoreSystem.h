@@ -37,7 +37,7 @@ private:
 	float mClockAngle = 0.0f;
 	float mGameElapsedTime = 0.0f;
 	size_t mCurrentEnemyIndex = 0;
-	int mPlayerComboCount = 0;
+	int mPlayerScore = 0;
 	
 	void UpdateBackground();
 	void UpdatePlayer();

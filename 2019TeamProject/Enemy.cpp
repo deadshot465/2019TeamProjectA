@@ -40,6 +40,12 @@ void Enemy::UpdateProjectiles()
 	}
 }
 
+void Enemy::UpdateCollisionBox(const RenderConfig& renderConfig) noexcept
+{
+	mCollisionBox.x = renderConfig.xPos;
+	mCollisionBox.y = renderConfig.yPos;
+}
+
 Enemy::Enemy(const std::string& filePath, SDL_Renderer* renderer,
 	int renderXPos, int renderYPos,
 	const std::string& projectileFilePath,
@@ -52,6 +58,9 @@ Enemy::Enemy(const std::string& filePath, SDL_Renderer* renderer,
 		128, 128);
 	mProjectile = std::make_unique<Image>(projectileFilePath, renderer, projectileXPos, projectileYPos, true, 32, 32);
 	mProjectile->SetRenderXPos(projectileRenderXPos);
+
+	mCollisionBox.h = 128;
+	mCollisionBox.w = 128;
 }
 
 Enemy::~Enemy()
@@ -132,6 +141,11 @@ Projectile::CollisionResult Enemy::CheckSpecialParryCollisions(const SDL_Rect& p
 	return { std::nullopt, false };
 }
 
+bool Enemy::CheckSelfCollision(const SDL_Rect& playerCollisionBox) const noexcept
+{
+	return SDL_HasIntersection(&mCollisionBox, &playerCollisionBox);
+}
+
 void Enemy::Update(SDL_Renderer* renderer, const RenderConfig& renderConfig)
 {
 	auto current_time = high_resolution_clock::now();
@@ -190,6 +204,8 @@ void Enemy::Update(SDL_Renderer* renderer, const RenderConfig& renderConfig)
 		SDL_RenderDrawRect(renderer, &(projectile->GetParryCollisionBox()));
 	}
 
+	UpdateCollisionBox(renderConfig);
+
 	mSprite->Render(renderer, renderConfig.xPos, renderConfig.yPos,
 		renderConfig.scaleX, renderConfig.scaleY);
 }
@@ -202,4 +218,9 @@ void Enemy::DestroyProjectile(const std::list<std::unique_ptr<Projectile>>::iter
 void Enemy::DestroySpecialProjectile(const std::list<std::unique_ptr<Projectile>>::iterator& iter)
 {
 	mSpecialProjectiles.erase(iter);
+}
+
+const SDL_Rect& Enemy::GetCollisionBox() const noexcept
+{
+	return mCollisionBox;
 }
