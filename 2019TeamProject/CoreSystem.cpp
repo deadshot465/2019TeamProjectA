@@ -28,12 +28,12 @@ void CoreSystem::UpdateBackground()
 
 void CoreSystem::UpdatePlayer()
 {
+    if (!mPlayer->GetAnimationStarted()) mBackgroundMoveSpeed = BACKGROUND_MOVE_SPEED;
 	auto key_states = SDL_GetKeyboardState(nullptr);
     auto parry_res = mCurrentEnemy->CheckParryCollisions(mPlayer->GetCollisionBox());
     
     if (parry_res.result && parry_res.projectile.has_value()) {
         if (key_states[SDL_SCANCODE_SPACE]) {
-            mBackgroundMoveSpeed *= 1;
             if (!(mPlayer->GetAnimationStarted())) {
                 mPlayer->SetAnimationState(PlayerAnimation::Parry);
                 mPlayer->SetAnimationStarted(true);
@@ -47,24 +47,15 @@ void CoreSystem::UpdatePlayer()
             parry_res.projectile.value()->get()->SetParryCollisionBoxEnabled(false);
     }
     else {
-        auto res = mCurrentEnemy->CheckCollisions(mPlayer->GetCollisionBox());
-        
-        if (res.result && res.projectile.has_value()) {
 
-            if (key_states[SDL_SCANCODE_SPACE]) {
-                mBackgroundMoveSpeed = 0;
+        auto res = mCurrentEnemy->CheckCollisions(mPlayer->GetCollisionBox());
+        if (res.result && res.projectile.has_value()) {
+                
                 if (!(mPlayer->GetAnimationStarted())) {
-                    mPlayer->SetAnimationState(PlayerAnimation::Guard);
-                    mPlayer->SetAnimationStarted(true);
-                }
-            }
-            else {
-                mBackgroundMoveSpeed = (WINDOW_WIDTH / 10) * 1;
-                if (!(mPlayer->GetAnimationStarted())) {
+                    mBackgroundMoveSpeed = BACKGROUND_BACK_SPEED;
                     mPlayer->SetAnimationState(PlayerAnimation::Injury);
                     mPlayer->SetAnimationStarted(true);
                 }
-            }
             mCurrentEnemy->DestroyProjectile(res.projectile.value());
         }
     }
@@ -109,6 +100,8 @@ void CoreSystem::RenderTitleScreen()
 
 void CoreSystem::RenderGameScreen()
 {
+    
+
 	auto current_time = high_resolution_clock::now();
 	auto elapsed = duration<float, seconds::period>(current_time - mGameTimer).count();
 
@@ -137,7 +130,8 @@ void CoreSystem::RenderGameScreen()
 
 	mSpriteManager->RenderStaticSprite(mRenderer,
 		static_cast<int>(StaticSpriteList::Indicator),
-		{ 64, static_cast<int>(WINDOW_HEIGHT * 0.05f), 1.0f, 1.0f }, mClockAngle);
+		{ 64, static_cast<int>(WINDOW_WIDTH * 0.03f), 1.0f, 1.0f }, mClockAngle);
+
 
 	mCurrentEnemy->Update(mRenderer,
 		{ static_cast<int>(mViewport.w * 0.8f),
