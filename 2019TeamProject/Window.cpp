@@ -4,7 +4,6 @@
 
 Window::~Window()
 {
-	mSceneManager.reset();
 	SDL_FreeSurface(mSurface);
 	SDL_DestroyWindow(mWindow);
 	SDL_Quit();
@@ -34,7 +33,7 @@ void Window::Initialize(const std::string& title, int width, int height)
 
 		ThrowIfFailed(SDL_UpdateWindowSurface(mWindow), "SDL failed to update the surface.\n");
 
-		mSceneManager = std::make_unique<SceneManager>(mWindow, bounds);
+		mGraphicsEngine = std::make_unique<CoreSystem>(mWindow, bounds);
 
 		mIsInit = true;
 	}
@@ -59,21 +58,6 @@ void Window::Broadcast()
 				case SDLK_ESCAPE:
 					mIsInit = false;
 					break;
-				case SDLK_SPACE:
-				{
-					switch (mSceneManager->GetCurrentScene())
-					{
-					case SceneName::Title:
-						mSceneManager->GetScene(SceneName::Game);
-						break;
-					case SceneName::GameClear:
-						mSceneManager->ClearGameStates();
-						mSceneManager->GetScene(SceneName::Title);
-						break;
-					default:
-						break;
-					}
-				}
 				default:
 					break;
 				}
@@ -81,7 +65,8 @@ void Window::Broadcast()
 			}
 		}
 
-		mSceneManager->Update();
+		mGraphicsEngine->ClearColor(0xFF, 0x00, 0xFF);
+		mGraphicsEngine->Render();
 
 		SDL_Delay(1);
 	}

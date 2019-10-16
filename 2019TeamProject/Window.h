@@ -6,7 +6,7 @@
 #else
 #include <SDL2/SDL.h>
 #endif
-#include "SceneManager.h"
+#include "CoreSystem.h"
 
 class Window
 {
@@ -16,7 +16,7 @@ private:
 	SDL_Event mEvent = {};
 	bool mIsInit = false;
 
-	std::unique_ptr<SceneManager> mSceneManager = nullptr;
+	std::unique_ptr<CoreSystem> mGraphicsEngine = nullptr;
 
 public:
 	Window() = default;
