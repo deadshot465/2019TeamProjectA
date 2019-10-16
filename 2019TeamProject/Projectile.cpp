@@ -5,6 +5,7 @@ void Projectile::Update()
 	mRenderConfig.xPos += mSpeed;
 	mCollisionBox.x += mSpeed;
 	mParryCollisionBox.x += mSpeed;
+	mParryCollisionBoxReferencePoint.x += mSpeed;
 }
 
 void Projectile::SetParryCollisionBoxEnabled(bool status) noexcept
@@ -12,25 +13,25 @@ void Projectile::SetParryCollisionBoxEnabled(bool status) noexcept
 	mParryCollisionBoxEnabled = status;
 }
 
-Projectile::Projectile(int width, int height, int projectileXPos, int projectileYPos, float speed) : mSpeed(speed)
+Projectile::Projectile(int width, int height, int projectileXPos, int projectileYPos, float speed, int scale) : mSpeed(speed)
 {
 	mCollisionBox.x = projectileXPos;
 	mCollisionBox.y = projectileYPos;
 	mCollisionBox.h = height;
 	mCollisionBox.w = width;
 
-	mParryCollisionBox.x = projectileXPos - 2 * width;
+	mParryCollisionBox.x = projectileXPos - width;
 	mParryCollisionBox.y = projectileYPos;
 	mParryCollisionBox.h = height;
 	mParryCollisionBox.w = width;
     
-    mParryCollisionBoxReferencePoint.x = mParryCollisionBox.x + (width / 2);
-    mParryCollisionBoxReferencePoint.y = mParryCollisionBox.y + (height / 2);
+    mParryCollisionBoxReferencePoint.x = mParryCollisionBox.x + (width / scale);
+    mParryCollisionBoxReferencePoint.y = mParryCollisionBox.y + (height / scale);
 
 	mRenderConfig.xPos = projectileXPos;
 	mRenderConfig.yPos = projectileYPos;
-	mRenderConfig.scaleX = SCALE_SIZE;
-	mRenderConfig.scaleY = SCALE_SIZE;
+	mRenderConfig.scaleX = SCALE_SIZE * scale;
+	mRenderConfig.scaleY = SCALE_SIZE * scale;
 }
 
 Projectile::~Projectile()

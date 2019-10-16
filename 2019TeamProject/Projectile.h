@@ -24,7 +24,7 @@ public:
 		bool result;
 	};
 
-	Projectile(int width, int height, int projectileXPos, int projectileYPos, float speed);
+	Projectile(int width, int height, int projectileXPos, int projectileYPos, float speed, int scale = 1);
 	~Projectile();
 
 	void SetRenderConfig(const RenderConfig& renderConfig) noexcept;
