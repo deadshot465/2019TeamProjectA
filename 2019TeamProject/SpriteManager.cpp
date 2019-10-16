@@ -8,9 +8,11 @@ SpriteManager::~SpriteManager()
 	}
 }
 
-void SpriteManager::LoadStaticSprite(const std::string& filePath, SDL_Renderer* renderer)
+void SpriteManager::LoadStaticSprite(const std::string& filePath, SDL_Renderer* renderer,
+	bool isAnimation, int frameWidth, int frameHeight)
 {
-	mStaticSprites.emplace_back(std::make_unique<Image>(filePath, renderer, 0, 0));
+	mStaticSprites.emplace_back(std::make_unique<Image>(filePath, renderer, 0, 0,
+		isAnimation, frameWidth, frameHeight));
 }
 
 void SpriteManager::RenderStaticSprite(SDL_Renderer* renderer, size_t index, const RenderConfig& renderConfig)

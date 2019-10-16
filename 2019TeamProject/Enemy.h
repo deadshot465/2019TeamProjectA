@@ -20,6 +20,7 @@ private:
 	std::unique_ptr<Image> mProjectile = nullptr;
 
 	std::list<std::unique_ptr<Projectile>> mProjectiles;
+	std::list<std::unique_ptr<Projectile>> mSpecialProjectiles;
 	std::list<RenderConfig> mProjectileConfigs;
 
 	void UpdateProjectiles();
@@ -28,13 +29,16 @@ public:
 	Enemy(const std::string& filePath, SDL_Renderer* renderer,
 		int renderXPos, int renderYPos,
 		const std::string& projectileFilePath,
-		int projectileXPos, int projectileYPos);
+		int projectileXPos, int projectileYPos, int projectileRenderXPos = 32);
 	~Enemy();
 
 	Projectile::CollisionResult CheckCollisions(const SDL_Rect& playerCollisionBox) noexcept;
 	Projectile::CollisionResult CheckParryCollisions(const SDL_Rect& playerCollisionBox) noexcept;
+	Projectile::CollisionResult CheckSpecialCollisions(const SDL_Rect& playerCollisionBox) noexcept;
+	Projectile::CollisionResult CheckSpecialParryCollisions(const SDL_Rect& playerCollisionBox) noexcept;
 
 	void Update(SDL_Renderer* renderer, const RenderConfig& renderConfig);
 	void DestroyProjectile(const std::list<std::unique_ptr<Projectile>>::iterator& iter);
+	void DestroySpecialProjectile(const std::list<std::unique_ptr<Projectile>>::iterator& iter);
 };
 
