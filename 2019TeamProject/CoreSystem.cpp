@@ -63,6 +63,27 @@ void CoreSystem::UpdatePlayer()
         }
     }
 
+	auto special_res = mCurrentEnemy->CheckSpecialCollisions(mPlayer->GetCollisionBox());
+
+	if (special_res.result && special_res.projectile.has_value()) {
+
+		if (key_states[SDL_SCANCODE_SPACE]) {
+			mBackgroundMoveSpeed = 0;
+			if (!(mPlayer->GetAnimationStarted())) {
+				mPlayer->SetAnimationState(PlayerAnimation::Guard);
+				mPlayer->SetAnimationStarted(true);
+			}
+		}
+		else {
+			mBackgroundMoveSpeed = (WINDOW_WIDTH / 10) * 1;
+			if (!(mPlayer->GetAnimationStarted())) {
+				mPlayer->SetAnimationState(PlayerAnimation::Injury);
+				mPlayer->SetAnimationStarted(true);
+			}
+		}
+		mCurrentEnemy->DestroySpecialProjectile(special_res.projectile.value());
+	}
+
 	mPlayer->UpdateAnimation();
 }
 
