@@ -19,7 +19,8 @@ public:
 	SpriteManager() = default;
 	~SpriteManager();
 
-	void LoadStaticSprite(const std::string& filePath, SDL_Renderer* renderer);
+	void LoadStaticSprite(const std::string& filePath, SDL_Renderer* renderer,
+		bool isAnimation = false, int frameWidth = 0, int frameHeight = 0);
 
 	void RenderStaticSprite(SDL_Renderer* renderer, size_t index, const RenderConfig& renderConfig);
 	void RenderStaticSprite(SDL_Renderer* renderer, size_t index, const RenderConfig& renderConfig, double angle);

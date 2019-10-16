@@ -98,7 +98,7 @@ void CoreSystem::RenderGameScreen()
 		{ 64, static_cast<int>(WINDOW_HEIGHT * 0.05f), 1.0f, 1.0f });
 	mSpriteManager->RenderNumbers(mRenderer,
 		static_cast<int>(StaticSpriteList::ComboCount), mPlayerComboCount,
-		{ WINDOW_WIDTH - 64,
+		{ WINDOW_WIDTH - 128,
 		static_cast<int>(WINDOW_HEIGHT * 0.05f), 1.0f, 1.0f });
 		
 	if (elapsed >= 1.0f) {
@@ -110,6 +110,7 @@ void CoreSystem::RenderGameScreen()
 	mSpriteManager->RenderStaticSprite(mRenderer,
 		static_cast<int>(StaticSpriteList::Indicator),
 		{ 64, static_cast<int>(WINDOW_WIDTH * 0.03f), 1.0f, 1.0f }, mClockAngle);
+
 
 	mCurrentEnemy->Update(mRenderer,
 		{ static_cast<int>(mViewport.w * 0.8f),
@@ -151,7 +152,7 @@ CoreSystem::CoreSystem(SDL_Window* window, const SDL_Rect& viewport)
 #endif
 	mSpriteManager = std::make_unique<SpriteManager>();
 
-	mSpriteManager->LoadStaticSprite("texture/background_resized.png", mRenderer);
+	mSpriteManager->LoadStaticSprite("texture/background.png", mRenderer);
 	mSpriteManager->LoadStaticSprite("texture/sample_clock.png", mRenderer);
 	mSpriteManager->LoadStaticSprite("texture/sample_indicator.png", mRenderer);
 	mSpriteManager->LoadStaticSprite("texture/floor.png", mRenderer);
@@ -159,14 +160,14 @@ CoreSystem::CoreSystem(SDL_Window* window, const SDL_Rect& viewport)
 	mSpriteManager->LoadStaticSprite("texture/sample_title_disappear.png", mRenderer);
 	mSpriteManager->LoadStaticSprite("texture/sample_game_clear.png", mRenderer);
 	mSpriteManager->LoadStaticSprite("texture/sample_game_clear_disappear.png", mRenderer);
-	mSpriteManager->LoadStaticSprite("texture/numbers.png", mRenderer);
+	mSpriteManager->LoadStaticSprite("texture/numbers.png", mRenderer, true, 64, 64);
 	
 	mEnemies.emplace_back(std::make_unique<Enemy>("texture/boss1.png", mRenderer, 0, 0,
 		"texture/bullet.png", 0, 0));
 	mEnemies.emplace_back(std::make_unique<Enemy>("texture/boss2.png", mRenderer, 0, 0,
-		"texture/bullet.png", 0, 0));
+		"texture/bullet.png", 0, 0, 0));
 	mEnemies.emplace_back(std::make_unique<Enemy>("texture/boss3.png", mRenderer, 0, 0,
-		"texture/bullet.png", 0, 0));
+		"texture/bullet.png", 0, 0, 64));
 	mPlayer = std::make_unique<Player>("texture/player_revised.png", mRenderer, 0, 0, 64, static_cast<int>(WINDOW_HEIGHT * 0.5f));
 
 	mCurrentEnemyIndex = GetRandomIntegerNumber<int>(0, mEnemies.size() - 1);
