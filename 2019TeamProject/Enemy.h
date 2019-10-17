@@ -25,6 +25,7 @@ private:
 	std::unique_ptr<Image> mProjectile = nullptr;
 
 	SDL_Rect mCollisionBox = {};
+	SDL_Rect mParryCollisionBox = {};
 
 	std::list<std::unique_ptr<Projectile>> mProjectiles;
 	std::list<std::unique_ptr<Projectile>> mSpecialProjectiles;
@@ -45,6 +46,7 @@ public:
 	Projectile::CollisionResult CheckSpecialCollisions(const SDL_Rect& playerCollisionBox) noexcept;
 	Projectile::CollisionResult CheckSpecialParryCollisions(const SDL_Rect& playerCollisionBox) noexcept;
 	bool CheckSelfCollision(const SDL_Rect& playerCollisionBox) const noexcept;
+	bool CheckSelfParryCollision(const SDL_Rect& playerCollisionBox) const noexcept;
 
 	void Update(SDL_Renderer* renderer, const RenderConfig& renderConfig,
 		bool fadeStarted);
@@ -52,5 +54,6 @@ public:
 	void DestroySpecialProjectile(const std::list<std::unique_ptr<Projectile>>::iterator& iter);
 
 	const SDL_Rect& GetCollisionBox() const noexcept;
+	const SDL_Rect& GetParryCollisionBox() const noexcept;
 };
 
