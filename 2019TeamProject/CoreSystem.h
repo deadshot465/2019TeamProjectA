@@ -27,7 +27,7 @@ private:
 	RenderConfig mFloorPosition1 = { 0, 0, SCALE_SIZE, SCALE_SIZE };
 	RenderConfig mFloorPosition2 = { WINDOW_WIDTH * 2, 0, SCALE_SIZE, SCALE_SIZE };
     int mBackgroundPosition = 0.0f;
-	int mBackgroundMoveSpeed = -1;
+	int mBackgroundMoveSpeed = 10;
     int mFloorMoveSpeed = FLOOR_MOVE_SPEED;
 
 	SDL_Rect mViewport = {};

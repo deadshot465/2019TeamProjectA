@@ -30,7 +30,7 @@ void CoreSystem::UpdateBackground()
 void CoreSystem::UpdatePlayer()
 {
     if (!mPlayer->GetAnimationStarted()) mFloorMoveSpeed = FLOOR_MOVE_SPEED;
-    if (!mPlayer->GetAnimationStarted()) mBackgroundMoveSpeed = WINDOW_WIDTH / 100;
+    if (!mPlayer->GetAnimationStarted()) mBackgroundMoveSpeed = 10;
 	auto key_states = SDL_GetKeyboardState(nullptr);
     auto parry_res = mCurrentEnemy->CheckParryCollisions(mPlayer->GetCollisionBox());
     
@@ -68,15 +68,16 @@ void CoreSystem::UpdatePlayer()
 	if (special_res.result && special_res.projectile.has_value()) {
 
 		if (key_states[SDL_SCANCODE_SPACE]) {
-			mBackgroundMoveSpeed = 0;
+            mFloorMoveSpeed = FLOOR_STOP_SPEED;
 			if (!(mPlayer->GetAnimationStarted())) {
 				mPlayer->SetAnimationState(PlayerAnimation::Guard);
 				mPlayer->SetAnimationStarted(true);
 			}
 		}
 		else {
-			mBackgroundMoveSpeed = (WINDOW_WIDTH / 10) * 1;
 			if (!(mPlayer->GetAnimationStarted())) {
+                mFloorMoveSpeed = FLOOR_STOP_SPEED;
+                mBackgroundMoveSpeed = 0;
 				mPlayer->SetAnimationState(PlayerAnimation::Injury);
 				mPlayer->SetAnimationStarted(true);
 			}
