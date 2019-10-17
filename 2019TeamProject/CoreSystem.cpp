@@ -70,8 +70,7 @@ void CoreSystem::UpdatePlayer()
 					//リーくんが見てほしい
 					//これは大丈夫ですか。
 					//************************************
-					mBackgroundMoveSpeed = 0;
-					mFloorMoveSpeed = 0;
+					
                 }
             mCurrentEnemy->DestroyProjectile(res.projectile.value());
         }
@@ -83,6 +82,7 @@ void CoreSystem::UpdatePlayer()
 
 		if (key_states[SDL_SCANCODE_SPACE]) {
             mFloorMoveSpeed = FLOOR_STOP_SPEED;
+            mBackgroundMoveSpeed = 0;
 			if (!(mPlayer->GetAnimationStarted())) {
 				mPlayer->SetAnimationState(PlayerAnimation::Guard);
 				mPlayer->SetAnimationStarted(true);
@@ -91,14 +91,13 @@ void CoreSystem::UpdatePlayer()
 				//リーくんが見てほしい
 				//これは大丈夫ですか。
 				//************************************
-				mFloorMoveSpeed = 0;
-				mBackgroundMoveSpeed = 0;
+				
+				
 			}
 		}
 		else {
 			if (!(mPlayer->GetAnimationStarted())) {
-                mFloorMoveSpeed = FLOOR_STOP_SPEED;
-                mBackgroundMoveSpeed = 0;
+               
 				mPlayer->SetAnimationState(PlayerAnimation::Injury);
 				mPlayer->SetAnimationStarted(true);
 
@@ -106,8 +105,8 @@ void CoreSystem::UpdatePlayer()
 				//リーくんが見てほしい
 				//これは大丈夫ですか。
 				//************************************
-				mFloorMoveSpeed = 0;
-				mBackgroundMoveSpeed = 0;
+                mFloorMoveSpeed = FLOOR_BACK_SPEED;
+                mBackgroundMoveSpeed = 0;
 			}
 		}
 		mCurrentEnemy->DestroySpecialProjectile(special_res.projectile.value());
@@ -115,21 +114,28 @@ void CoreSystem::UpdatePlayer()
 
 	if (mCurrentEnemy->CheckSelfCollision(mPlayer->GetCollisionBox())) {
 		if (key_states[SDL_SCANCODE_SPACE] && !mFadeStarted) {
-			mFadeStarted = true;
-			mCurrentEnemyIndex = GetRandomIntegerNumber<int>(0, mEnemies.size() - 1);
-			mCurrentEnemy = mEnemies[mCurrentEnemyIndex].get();
-			mPlayerScore += 300;
+
+			if (!(mPlayer->GetAnimationStarted())) {
+				mPlayer->SetAnimationState(PlayerAnimation::Parry);
+				mPlayer->SetAnimationStarted(true);
+				mPlayerScore += 300;
+				mFadeStarted = true;
+				return;
+			}
+
 		}
 		else {
 			if (!(mPlayer->GetAnimationStarted())) {
 				mPlayer->SetAnimationState(PlayerAnimation::Injury);
 				mPlayer->SetAnimationStarted(true);
 
+				mEnemyPosition.xPos += 128;
+
 				//************************************
 				//リーくんが見てほしい
 				//これは大丈夫ですか。
 				//************************************
-				mFloorMoveSpeed = 0;
+				mFloorMoveSpeed = FLOOR_STOP_SPEED;
 				mBackgroundMoveSpeed = 0;
 			}
 		}
