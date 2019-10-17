@@ -114,15 +114,22 @@ void CoreSystem::UpdatePlayer()
 
 	if (mCurrentEnemy->CheckSelfCollision(mPlayer->GetCollisionBox())) {
 		if (key_states[SDL_SCANCODE_SPACE] && !mFadeStarted) {
-			mFadeStarted = true;
-			mCurrentEnemyIndex = GetRandomIntegerNumber<int>(0, mEnemies.size() - 1);
-			mCurrentEnemy = mEnemies[mCurrentEnemyIndex].get();
-			mPlayerScore += 300;
+
+			if (!(mPlayer->GetAnimationStarted())) {
+				mPlayer->SetAnimationState(PlayerAnimation::Parry);
+				mPlayer->SetAnimationStarted(true);
+				mPlayerScore += 300;
+				mFadeStarted = true;
+				return;
+			}
+
 		}
 		else {
 			if (!(mPlayer->GetAnimationStarted())) {
 				mPlayer->SetAnimationState(PlayerAnimation::Injury);
 				mPlayer->SetAnimationStarted(true);
+
+				mEnemyPosition.xPos += 128;
 
 				//************************************
 				//ƒŠ[‚­‚ñ‚ªŒ©‚Ä‚Ù‚µ‚¢
