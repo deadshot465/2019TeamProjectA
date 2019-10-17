@@ -28,6 +28,8 @@ public:
 	void SetRenderXPos(int xPos) noexcept;
 	void SetRenderYPos(int yPos) noexcept;
 
+	void SetAlphaBlend(Uint8 alpha) noexcept;
+
 	void Render(SDL_Renderer* renderer, int dstXPos, int dstYPos, float scaleX, float scaleY);
 	void Render(SDL_Renderer* renderer, int dstXPos, int dstYPos,
 		float scaleX, float scaleY, double angle);

@@ -18,6 +18,7 @@ private:
 	std::chrono::time_point<std::chrono::steady_clock> mAnimationStartTimer;
 
 	std::unique_ptr<Image> mSprite = nullptr;
+	std::unique_ptr<Image> mStatusSprite = nullptr;
 	int mSpeed = 25;
 
 	SDL_Rect mCollisionBox = {};
@@ -29,7 +30,8 @@ private:
 
 public:
 	Player(const std::string& filePath, SDL_Renderer* renderer,
-		int renderXPos, int renderYPos, int initialXPos, int initialYPos);
+		int renderXPos, int renderYPos, int initialXPos, int initialYPos,
+		const std::string& statusFilePath);
 	~Player();
 
 	const SDL_Rect& GetCollisionBox();

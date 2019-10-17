@@ -22,6 +22,8 @@ public:
 	void LoadStaticSprite(const std::string& filePath, SDL_Renderer* renderer,
 		bool isAnimation = false, int frameWidth = 0, int frameHeight = 0);
 
+	void SetAlphaBlend(size_t index, Uint8 alpha);
+
 	void RenderStaticSprite(SDL_Renderer* renderer, size_t index, const RenderConfig& renderConfig);
 	void RenderStaticSprite(SDL_Renderer* renderer, size_t index, const RenderConfig& renderConfig, double angle);
 	void RenderNumbers(SDL_Renderer* renderer, size_t index, int num,

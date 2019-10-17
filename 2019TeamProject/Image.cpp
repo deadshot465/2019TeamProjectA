@@ -49,6 +49,11 @@ void Image::SetRenderYPos(int yPos) noexcept
 	mRenderYPos = yPos;
 }
 
+void Image::SetAlphaBlend(Uint8 alpha) noexcept
+{
+	SDL_SetTextureAlphaMod(mTexture, alpha);
+}
+
 void Image::Render(SDL_Renderer* renderer, int dstXPos, int dstYPos,
 	float scaleX, float scaleY)
 {

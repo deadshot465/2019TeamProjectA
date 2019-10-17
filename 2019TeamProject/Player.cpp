@@ -12,6 +12,29 @@ void Player::Render(SDL_Renderer* renderer)
 {
 	mSprite->Render(renderer, mRenderConfig.xPos, mRenderConfig.yPos,
 		mRenderConfig.scaleX, mRenderConfig.scaleY);
+
+	switch (mCurrentAnimation)
+	{
+	case PlayerAnimation::Running:
+		mStatusSprite->SetRenderXPos(0);
+		break;
+	case PlayerAnimation::Guard:
+		mStatusSprite->SetRenderXPos(128);
+		break;
+	case PlayerAnimation::Parry:
+		mStatusSprite->SetRenderXPos(256);
+		break;
+	case PlayerAnimation::Injury:
+		mStatusSprite->SetRenderXPos(384);
+		break;
+	case PlayerAnimation::Beginning:
+		break;
+	default:
+		break;
+	}
+
+	mStatusSprite->Render(renderer, mRenderConfig.xPos, mRenderConfig.yPos - 64,
+		mRenderConfig.scaleX, mRenderConfig.scaleY);
 }
 
 void Player::SetAnimationState(PlayerAnimation playerAnimation)
@@ -90,11 +113,13 @@ bool Player::GetAnimationStarted() const noexcept
 	return mAnimationStarted;
 }
 
-Player::Player(const std::string& filePath, SDL_Renderer* renderer, int renderXPos, int renderYPos, int initialXPos, int initialYPos) :
+Player::Player(const std::string& filePath, SDL_Renderer* renderer, int renderXPos, int renderYPos, int initialXPos, int initialYPos, const std::string& statusFilePath) :
 	mAnimationTimer(high_resolution_clock::now())
 {
 	mSprite = std::make_unique<Image>(filePath, renderer, renderXPos, renderYPos, true,
 		128, 128);
+
+	mStatusSprite = std::make_unique<Image>(statusFilePath, renderer, renderXPos, renderYPos, true, 128, 64);
 
 	mRenderConfig.xPos = initialXPos;
 	mRenderConfig.yPos = initialYPos;

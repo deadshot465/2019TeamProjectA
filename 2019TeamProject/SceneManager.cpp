@@ -16,7 +16,7 @@ void SceneManager::GetScene(SceneName scene) noexcept
 
 void SceneManager::Update() noexcept
 {
-	mCoreSystem.ClearColor(0xFF, 0x00, 0xFF);
+	mCoreSystem.ClearColor(0x00, 0x00, 0x00);
 	mCoreSystem.Render(mCurrentScene);
 
 	if (mCoreSystem.GetGameClearState())
