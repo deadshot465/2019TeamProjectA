@@ -161,11 +161,11 @@ void Enemy::Update(SDL_Renderer* renderer, const RenderConfig& renderConfig,
 
 		if (GetRandomIntegerNumber<int>(0, 1) == 0) {
 			mProjectiles.emplace_back(std::make_unique<Projectile>(mProjectile->GetWidth(), mProjectile->GetHeight(),
-				renderConfig.xPos, renderConfig.yPos + 20, -25));
+				renderConfig.xPos, renderConfig.yPos + 20, -35));
 		}
 		else {
 			mSpecialProjectiles.emplace_back(std::make_unique<Projectile>(mProjectile->GetWidth() * 2, mProjectile->GetHeight() * 2,
-				renderConfig.xPos, renderConfig.yPos + 20, -25, 2));
+				renderConfig.xPos, renderConfig.yPos + 20, -35, 2));
 		}
 		
 		mAttackStartTime = current_time;

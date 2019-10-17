@@ -272,7 +272,7 @@ void CoreSystem::FadeInOut()
 void CoreSystem::ResetEnemy()
 {
 	mEnemyPosition
-		= { static_cast<int>(mViewport.w * 0.8f), static_cast<int>(mViewport.h * 0.4f), SCALE_SIZE, SCALE_SIZE };
+		= { static_cast<int>(mViewport.w * 0.8f), static_cast<int>(mViewport.h * 0.42f), SCALE_SIZE, SCALE_SIZE };
 	mCurrentEnemyIndex = GetRandomIntegerNumber<int>(0, mEnemies.size() - 1);
 	mCurrentEnemy = mEnemies[mCurrentEnemyIndex].get();
 }
@@ -300,13 +300,14 @@ CoreSystem::CoreSystem(SDL_Window* window, const SDL_Rect& viewport)
 	mSpriteManager->LoadStaticSprite("texture/numbers.png", mRenderer, true, 64, 64);
 	mSpriteManager->LoadStaticSprite("texture/fade.png", mRenderer);
 
+
 	mEnemies.emplace_back(std::make_unique<Enemy>("texture/boss1.png", mRenderer, 0, 0,
 		"texture/bullet.png", 0, 0));
 	mEnemies.emplace_back(std::make_unique<Enemy>("texture/boss2.png", mRenderer, 0, 0,
 		"texture/bullet.png", 0, 0, 0));
 	mEnemies.emplace_back(std::make_unique<Enemy>("texture/boss3.png", mRenderer, 0, 0,
 		"texture/bullet.png", 0, 0, 64));
-	mPlayer = std::make_unique<Player>("texture/player_revised.png", mRenderer, 0, 0, 64, static_cast<int>(WINDOW_HEIGHT * 0.4f),
+	mPlayer = std::make_unique<Player>("texture/player_revised.png", mRenderer, 0, 0, 64, static_cast<int>(WINDOW_HEIGHT * 0.42f),
 		"texture/moji.png");
 
 	mCurrentEnemyIndex = GetRandomIntegerNumber<int>(0, mEnemies.size() - 1);
@@ -314,7 +315,7 @@ CoreSystem::CoreSystem(SDL_Window* window, const SDL_Rect& viewport)
 
 	mEnemyPosition = {
 		static_cast<int>(mViewport.w * 0.8f),
-		static_cast<int>(mViewport.h * 0.4f),
+		static_cast<int>(mViewport.h * 0.42f),
 		SCALE_SIZE, SCALE_SIZE
 	};
 }

@@ -56,7 +56,8 @@ private:
 		GameClearAppear,
 		GameClearDisappear,
 		ComboCount,
-		Fade
+		Fade,
+        Help,
 	};
 
 	void RenderTitleScreen();
