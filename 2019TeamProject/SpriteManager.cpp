@@ -15,6 +15,11 @@ void SpriteManager::LoadStaticSprite(const std::string& filePath, SDL_Renderer* 
 		isAnimation, frameWidth, frameHeight));
 }
 
+void SpriteManager::SetAlphaBlend(size_t index, Uint8 alpha)
+{
+	mStaticSprites[index]->SetAlphaBlend(alpha);
+}
+
 void SpriteManager::RenderStaticSprite(SDL_Renderer* renderer, size_t index, const RenderConfig& renderConfig)
 {
 	try

@@ -49,6 +49,13 @@ enum class SceneName {
 	GameClear
 };
 
+enum class PlayerStatus {
+	Running,
+	Guard,
+	Parry,
+	Injury
+};
+
 inline void ThrowIfFailed(int result, const std::string& message) {
 	if (result < 0) {
 

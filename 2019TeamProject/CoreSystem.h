@@ -29,6 +29,10 @@ private:
     int mBackgroundPosition = 0.0f;
 	int mBackgroundMoveSpeed = 10;
     int mFloorMoveSpeed = FLOOR_MOVE_SPEED;
+	float mBackgroundFloorUpdateDuration = 1.0f;
+	bool mFadeStarted = false;
+
+	RenderConfig mEnemyPosition = {};
 
 	SDL_Rect mViewport = {};
 	
@@ -51,12 +55,15 @@ private:
 		TitleScreenDisappear,
 		GameClearAppear,
 		GameClearDisappear,
-		ComboCount
+		ComboCount,
+		Fade
 	};
 
 	void RenderTitleScreen();
 	void RenderGameScreen();
 	void RenderGameClearScreen();
+	void FadeInOut();
+	void ResetEnemy();
 
 public:
 	CoreSystem(SDL_Window* window, const SDL_Rect& viewport);

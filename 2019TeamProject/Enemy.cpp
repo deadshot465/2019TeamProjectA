@@ -146,8 +146,10 @@ bool Enemy::CheckSelfCollision(const SDL_Rect& playerCollisionBox) const noexcep
 	return SDL_HasIntersection(&mCollisionBox, &playerCollisionBox);
 }
 
-void Enemy::Update(SDL_Renderer* renderer, const RenderConfig& renderConfig)
+void Enemy::Update(SDL_Renderer* renderer, const RenderConfig& renderConfig,
+	bool fadeStarted)
 {
+	if (fadeStarted) return;
 	auto current_time = high_resolution_clock::now();
 	auto elapsed = std::chrono::duration<float, std::chrono::seconds::period>
 		(current_time - mAttackStartTime).count();
@@ -197,12 +199,17 @@ void Enemy::Update(SDL_Renderer* renderer, const RenderConfig& renderConfig)
 			projectile->GetRenderConfig().yPos,
 			projectile->GetRenderConfig().scaleX,
 			projectile->GetRenderConfig().scaleY);
-
+#ifdef _DEBUG
 		SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
 		SDL_RenderDrawRect(renderer, &(projectile->GetCollisionBox()));
 		SDL_SetRenderDrawColor(renderer, 0x00, 0xFF, 0x00, 0xFF);
 		SDL_RenderDrawRect(renderer, &(projectile->GetParryCollisionBox()));
+		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0xFF, 0xFF);
 	}
+
+	SDL_RenderDrawRect(renderer, &mCollisionBox);
+#else
+#endif
 
 	UpdateCollisionBox(renderConfig);
 

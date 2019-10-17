@@ -46,7 +46,8 @@ public:
 	Projectile::CollisionResult CheckSpecialParryCollisions(const SDL_Rect& playerCollisionBox) noexcept;
 	bool CheckSelfCollision(const SDL_Rect& playerCollisionBox) const noexcept;
 
-	void Update(SDL_Renderer* renderer, const RenderConfig& renderConfig);
+	void Update(SDL_Renderer* renderer, const RenderConfig& renderConfig,
+		bool fadeStarted);
 	void DestroyProjectile(const std::list<std::unique_ptr<Projectile>>::iterator& iter);
 	void DestroySpecialProjectile(const std::list<std::unique_ptr<Projectile>>::iterator& iter);
 
