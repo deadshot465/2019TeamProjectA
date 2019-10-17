@@ -52,7 +52,7 @@ private:
 		Indicator,
 		Floor,
 		TitleScreenAppear,
-		TitleScreenDisappear,
+		Zan,
 		GameClearAppear,
 		GameClearDisappear,
 		ComboCount,

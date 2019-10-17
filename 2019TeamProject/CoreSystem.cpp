@@ -122,7 +122,6 @@ void CoreSystem::UpdatePlayer()
 				mFadeStarted = true;
 				return;
 			}
-
 		}
 		else {
 			if (!(mPlayer->GetAnimationStarted())) {
@@ -153,9 +152,14 @@ void CoreSystem::RenderTitleScreen()
 	bool interval = (static_cast<int>(elapsed) % 2 == 0);
 
 	mSpriteManager->RenderStaticSprite(mRenderer,
-		interval ? static_cast<size_t>(StaticSpriteList::TitleScreenAppear) :
-		static_cast<size_t>(StaticSpriteList::TitleScreenDisappear),
+		static_cast<int>(StaticSpriteList::TitleScreenAppear),
 		{ 0, 0, SCALE_SIZE, SCALE_SIZE });
+
+	if (interval) {
+		mSpriteManager->RenderStaticSprite(mRenderer,
+			static_cast<int>(StaticSpriteList::Zan),
+			{ 0, 0, SCALE_SIZE, SCALE_SIZE });
+	}
 }
 
 void CoreSystem::RenderGameScreen()
@@ -234,8 +238,7 @@ void CoreSystem::RenderGameClearScreen()
 	bool interval = (static_cast<int>(elapsed) % 2 == 0);
 
 	mSpriteManager->RenderStaticSprite(mRenderer,
-		interval ? static_cast<size_t>(StaticSpriteList::GameClearAppear) :
-		static_cast<size_t>(StaticSpriteList::GameClearDisappear),
+		static_cast<size_t>(StaticSpriteList::GameClearAppear),
 		{ 0, 0, SCALE_SIZE, SCALE_SIZE });
 }
 
@@ -293,11 +296,11 @@ CoreSystem::CoreSystem(SDL_Window* window, const SDL_Rect& viewport)
 	mSpriteManager->LoadStaticSprite("texture/sample_clock.png", mRenderer);
 	mSpriteManager->LoadStaticSprite("texture/sample_indicator.png", mRenderer);
 	mSpriteManager->LoadStaticSprite("texture/floor.png", mRenderer);
-	mSpriteManager->LoadStaticSprite("texture/sample_title.png", mRenderer);
-	mSpriteManager->LoadStaticSprite("texture/sample_title_disappear.png", mRenderer);
-	mSpriteManager->LoadStaticSprite("texture/sample_game_clear.png", mRenderer);
+	mSpriteManager->LoadStaticSprite("texture/title1.png", mRenderer);
+	mSpriteManager->LoadStaticSprite("texture/zan1.png", mRenderer);
+	mSpriteManager->LoadStaticSprite("texture/title1.png", mRenderer);
 	mSpriteManager->LoadStaticSprite("texture/sample_game_clear_disappear.png", mRenderer);
-	mSpriteManager->LoadStaticSprite("texture/numbers.png", mRenderer, true, 64, 64);
+	mSpriteManager->LoadStaticSprite("texture/math.png", mRenderer, true, 64, 64);
 	mSpriteManager->LoadStaticSprite("texture/fade.png", mRenderer);
 
 
