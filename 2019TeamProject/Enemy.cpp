@@ -42,7 +42,7 @@ void Enemy::UpdateProjectiles()
 
 void Enemy::UpdateCollisionBox(const RenderConfig& renderConfig) noexcept
 {
-	mCollisionBox.x = renderConfig.xPos;
+	mCollisionBox.x = renderConfig.xPos - 64;
 	mCollisionBox.y = renderConfig.yPos;
 }
 
@@ -167,7 +167,6 @@ void Enemy::Update(SDL_Renderer* renderer, const RenderConfig& renderConfig,
 			mSpecialProjectiles.emplace_back(std::make_unique<Projectile>(mProjectile->GetWidth() * 2, mProjectile->GetHeight() * 2,
 				renderConfig.xPos, renderConfig.yPos + 20, -25, 2));
 		}
-
 		
 		mAttackStartTime = current_time;
 		mAttackDuration = GetRandomFloatNumber<float>(1.0f, 5.0f);
