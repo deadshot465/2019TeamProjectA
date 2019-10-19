@@ -19,6 +19,7 @@
 		2344EB65234ED5A80002C532 /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2344EB64234ED5A80002C532 /* SDL2.framework */; };
 		2344EB68234ED5B50002C532 /* SDL2_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2344EB66234ED5B40002C532 /* SDL2_mixer.framework */; };
 		2344EB69234ED5B50002C532 /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2344EB67234ED5B40002C532 /* SDL2_image.framework */; };
+		23B3022223583B0E005AC57F /* SceneManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 23B3022123583B0E005AC57F /* SceneManager.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -56,6 +57,8 @@
 		2344EB64234ED5A80002C532 /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
 		2344EB66234ED5B40002C532 /* SDL2_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_mixer.framework; path = ../../../../../../Library/Frameworks/SDL2_mixer.framework; sourceTree = "<group>"; };
 		2344EB67234ED5B40002C532 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../../../../../../Library/Frameworks/SDL2_image.framework; sourceTree = "<group>"; };
+		23B3022023583B0D005AC57F /* SceneManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SceneManager.h; path = 2019TeamProject/SceneManager.h; sourceTree = SOURCE_ROOT; };
+		23B3022123583B0E005AC57F /* SceneManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SceneManager.cpp; path = 2019TeamProject/SceneManager.cpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +95,8 @@
 		2344EB40234ECEE80002C532 /* 2019TeamProjectMac */ = {
 			isa = PBXGroup;
 			children = (
+				23B3022123583B0E005AC57F /* SceneManager.cpp */,
+				23B3022023583B0D005AC57F /* SceneManager.h */,
 				2344EB4B234ED45D0002C532 /* 2019TeamProject.cpp */,
 				2344EB50234ED45E0002C532 /* CoreSystem.cpp */,
 				2344EB4D234ED45D0002C532 /* CoreSystem.h */,
@@ -184,6 +189,7 @@
 				2344EB5C234ED4600002C532 /* Image.cpp in Sources */,
 				2344EB60234ED4600002C532 /* Player.cpp in Sources */,
 				2344EB5E234ED4600002C532 /* CoreSystem.cpp in Sources */,
+				23B3022223583B0E005AC57F /* SceneManager.cpp in Sources */,
 				2344EB5F234ED4600002C532 /* Projectile.cpp in Sources */,
 				2344EB61234ED4600002C532 /* SpriteManager.cpp in Sources */,
 				2344EB5B234ED4600002C532 /* 2019TeamProject.cpp in Sources */,
